@@ -1,7 +1,7 @@
 CC= g++
 CFLAGS= -c -Wall -O2 -std=c++11 
 LFLAGS=
-PROGS= airports
+PROGS= airport
 OBJS= digraph.o wdigraph.o airport.o
 
 # executable targets
