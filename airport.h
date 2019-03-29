@@ -4,18 +4,18 @@
   latitude/longitude
 */
 
-#ifndef _FLIGHT_H_
-#define _FLIGHT_H_
+#ifndef _AIRPORT_H_
+#define _AIRPORT_H_
 
-#include "flight.h"
+#include "airport.h"
 
-#define NUM_FLIGHTS  15190
+#define NUM_AIRPORTS  4578
 
-typedef struct {
-  char name[3]; // Index of restaurant from 0 to NUM_FLIGHTS-1.
+struct airport {
+  string name; // Index of flight from 0 to NUM_FLIGHTS-1.
   int id[10]; // Index of restaurant from 0 to NUM_FLIGHTS-1.
-  uint16_t dist;  // Distance between the two airports.
+  int32_t lat;
+  int32_t lon;
 };
-
 
 #endif

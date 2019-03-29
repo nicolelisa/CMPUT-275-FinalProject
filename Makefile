@@ -8,7 +8,7 @@ OBJS= digraph.o wdigraph.o airport.o
 airport: wdigraph.o digraph.o airport.o
 	$(CC) airport.o -o airport $(LFLAGS)
 
-airport.o: data_and_graphs.cpp wdigraph.o
+airport.o: data_and_graphs.cpp wdigraph.o airport.h
 	$(CC) data_and_graphs.cpp -o airport.o $(CFLAGS)
 
 wdigraph.o: digraph.o wdigraph.h
