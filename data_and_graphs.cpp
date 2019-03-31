@@ -16,9 +16,8 @@ using namespace std;
 
 void readAirports(unordered_map<string, airport>& airports, string filename) {
     ifstream file;
-    string name,start, line, id, lat_str;
+    string name,start, line, str_read;
     int str_start, str_end;
-    int32_t lat, lon;
   
     file.open(filename);
 
@@ -26,44 +25,48 @@ void readAirports(unordered_map<string, airport>& airports, string filename) {
         cerr << "Error encountered. File was not read." << endl;
         exit(0);
     }
+
     //throws away the first line which is just labels
-    
     getline(file, line);
-    int counter = 1;
 
     while (getline(file, line)) {
         airport currentAirport;
         str_start = 0;
-        cout << "LINE: " << line << endl;
-        end_str = line.find(",", str_start+1);
+        str_end = line.find(",", str_start+1);
+        // cout << "START END " << str_start << "  " << str_end << endl;
+        str_read = line.substr(str_start, str_end-str_start);
+        int32_t id = stoi(str_read);
+        currentAirport.id = id;
+
+        // cout << "LINE: " << line << endl;
+        // cout << "  ID: " << str_read;
+        str_end = line.find(",", str_start+1);
         for (int i = 0; i < 4; i++) {
             str_start = line.find(",", str_start+1);
-            // cout << "FOUND: " << found1 << endl;
         }
-        // cout << "END FIND: " << found1 << endl;
 
         name = line.substr(str_start+1, 3);
-        cout << " NAME: " << name;
+        currentAirport.name = name;
+        // cout << "  NAME: " << name;
         
         for (int i = 0; i < 2; i++) {
             str_start = line.find(",", str_start+1);
         }
 
         str_end = line.find(",", str_start+1);
-        lat_str = line.substr(str_start+1, str_end-str_start-1);
-        lat = stoi(lat_str);
-        cout << "   LAT: " << lat_str << endl;
-        // found1 = line.find(",", found2+1);
-        // found2 = line.find(",", found1+1);
-        // end = line.substr(found1+1, found2-found1-1);
+        str_read = line.substr(str_start+1, str_end-str_start-1);
+        int32_t lat = static_cast <int32_t> (stof(str_read) * 100000);
+        // cout << "  LAT: " << lat;
+        currentAirport.lat = lat;
 
-        // cout << counter << ": ";
-        // cout << "Airport 1: " << start << " ";
-        // cout << "Airport 2: " << end << endl;
+        str_start = line.find(",", str_start+1);
+        str_end = line.find(",", str_start+1);
+        str_read = line.substr(str_start+1, str_end-str_start-1);
+        int32_t lon = static_cast <int32_t> (stof(str_read) * 100000);
+        // cout << "  LON: " << lon << endl;
+        currentAirport.lon = lon;
 
-        // Still need to get their long and lat then add the weighted edge to the graphs!!!!
-
-        counter++;
+        airports.insert({name, currentAirport});
     }
     file.close();
 }
@@ -128,9 +131,21 @@ ll findDistance(ll lon1, ll lat1, ll lon2, ll lat2) {
 
 
 int main() {
+    string a;
     // WDigraph flights;
     // readInData(flights, "data/flightData.csv");
     unordered_map<string, airport> airports;
     readAirports(airports, "data/airportData.csv");
+    cout << "Enter an airport: ";
+    cin >> a;
+    unordered_map<string,airport>::const_iterator got = airports.find (a);
+
+  if ( got == airports.end() )
+    cout << "not found";
+  else
+    cout << got->first << " is " << got->second.id;
+
+  cout << endl;
+    // cout << "ID of airport " << a << " is " << airports.find(a).id << endl;
 }
 

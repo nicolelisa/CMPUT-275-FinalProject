@@ -13,7 +13,7 @@
 
 struct airport {
   string name; // Index of flight from 0 to NUM_FLIGHTS-1.
-  int id[10]; // Index of restaurant from 0 to NUM_FLIGHTS-1.
+  int id; // Index of restaurant from 0 to NUM_FLIGHTS-1.
   int32_t lat;
   int32_t lon;
 };
