@@ -2,23 +2,22 @@ CC= g++
 CFLAGS= -c -Wall -O2 -std=c++11 
 LFLAGS=
 PROGS= flightpath
-OBJS= digraph.o flightpath.o bruteforce.o nn.o
+OBJS= digraph.o  flightpath.o
 
 # executable targets
+
+all: flightpath
+
 flightpath: $(OBJS)
 	$(CC) flightpath.o -o flightpath
 
-flightpath.o: data_and_graphs.cpp digraph.o airport.h wdigraph.h nn.o bruteforce.o 
+# object targets
+
+flightpath.o: data_and_graphs.cpp bruteforce.h nn.h digraph.h airport.h wdigraph.h
 	$(CC) data_and_graphs.cpp -o flightpath.o $(CFLAGS)
 
 digraph.o: digraph.cpp digraph.h
 	$(CC) digraph.cpp -o digraph.o $(CFLAGS)
-
-bruteforce.o: bruteforce.cpp bruteforce.h
-	$(CC) bruteforce.cpp -o bruteforce.o $(CFLAGS)
-
-nn.o: nn.cpp nn.h
-	$(CC) nn.cpp -o nn.o $(CFLAGS)
 
 clean:
 	@rm -f $(OBJS) $(PROGS)

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 #include <list>
 #include <utility>
 #include "wdigraph.h"
@@ -16,6 +17,11 @@
 using namespace std;
 
 #define ll long long
+// vector<string> bruteforce(vector<string>& dest) {
+//     vector<string> test;
+//     test.push_back("HELLO");
+//     return test;
+// }
 
 void readAirports(unordered_map<string, airport>& airports, string filename) {
     ifstream file;
@@ -192,10 +198,11 @@ int main() {
     cout << endl;
 
     /* Testing for brute force */
-    // vector<string> path = bruteforce(destinations);
-    // cout << "Result: ";
-    // for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
-    //     cout << *i << ' ';
-    // }
+    vector<string> path = bruteforce(destinations, airports);
+    cout << "Result: ";
+    for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
+        cout << *i << ' ';
+    }
+
 }
 
