@@ -9,7 +9,7 @@ OBJS= digraph.o  flightpath.o
 all: flightpath
 
 flightpath: $(OBJS)
-	$(CC) flightpath.o -o flightpath
+	$(CC) $(OBJS) -o flightpath
 
 # object targets
 
