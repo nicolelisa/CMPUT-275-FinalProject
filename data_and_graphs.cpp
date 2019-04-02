@@ -203,6 +203,11 @@ int main() {
     for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
         cout << *i << ' ';
     }
-
+    cout << endl;
+    cout << " Airports: ";
+    for (auto i = destinations.begin(); i != destinations.end(); ++i) {
+        cout << *i << " ";
+    }
+    cout << endl;
 }
 
