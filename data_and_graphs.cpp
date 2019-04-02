@@ -138,16 +138,28 @@ int main() {
     // readInData(flights, "data/flightData.csv");
     unordered_map<string, airport> airports;
     readAirports(airports, "data/airportData.csv");
-    cout << "Enter an airport: ";
-    cin >> a;
-    unordered_map<string,airport>::const_iterator got = airports.find (a);
+    //   cout << "Enter an airport: ";
+    //   cin >> a;
+    //   unordered_map<string,airport>::const_iterator got = airports.find (a);
 
-  if ( got == airports.end() )
-    cout << "not found";
-  else
-    cout << got->first << " is " << got->second.id;
+    // if ( got == airports.end() )
+    //   cout << "not found";
+    // else
+    //   cout << got->first << " is " << got->second.id;
 
-  cout << endl;
-    // cout << "ID of airport " << a << " is " << airports.find(a).id << endl;
+    // cout << endl;
+    vector<string> destinations;
+    int n = 3;
+    // string a;
+    cout << "Enter a list of airports (3): ";
+    for (int i = 0; i<n; ++i) {
+        cin >> a;
+        destinations.push_back(a);
+    }
+    cout << "The list of airports is: ";
+    for (vector<string>::const_iterator i = destinations.begin(); i != destinations.end(); ++i) {
+        cout << *i << ' ';
+    }
+    cout << endl;
 }
 
