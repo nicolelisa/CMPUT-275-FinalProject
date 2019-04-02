@@ -2,20 +2,17 @@ CC= g++
 CFLAGS= -c -Wall -O2 -std=c++11 
 LFLAGS=
 PROGS= airport
-OBJS= digraph.o wdigraph.o airport.o
+OBJS= mdigraph.o airport.o
 
 # executable targets
 airport: $(OBJS)
-	$(CC) airport.o -o airport
+  $(CC) airport.o -o airport
 
-airport.o: data_and_graphs.cpp wdigraph.o airport.h
-	$(CC) data_and_graphs.cpp -o airport.o $(CFLAGS)
-
-wdigraph.o: digraph.h wdigraph.h
-	$(CC) wdigraph.h -o wdigraph.o $(CFLAGS)
+airport.o: data_and_graphs.cpp digraph.o airport.h wdigraph.h
+  $(CC) data_and_graphs.cpp -o airport.o $(CFLAGS)
 
 digraph.o: digraph.cpp digraph.h
-	$(CC) digraph.cpp -o digraph.o $(CFLAGS)
+  $(CC) digraph.cpp -o digraph.o $(CFLAGS)
 
 clean:
-	@rm -f $(OBJS) $(PROGS)
+  @rm -f $(OBJS) $(PROGS)
