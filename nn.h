@@ -84,6 +84,7 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
 
     // vector with pairs of the airport names and ids
     vector<pair<string, int>> bothIDs;
+    
     for (int i = 0; i < requestedAirports.size(); i++) {
         numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
         bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));

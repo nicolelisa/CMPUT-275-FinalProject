@@ -203,7 +203,9 @@ int main() {
         cout << *i << ' ';
     }
 
-    WDigraph graph = createGraph(destinations, flights, airports);
+    /* Testing for nearest neighbours */
+    //WDigraph graph = createGraph(destinations, flights, airports);
+
 
 }
 
