@@ -9,6 +9,8 @@
 #include "wdigraph.h"
 #include "digraph.h"
 #include "airport.h"
+#include "bruteforce.h"
+#include "nn.h"
 
 using namespace std;
 
