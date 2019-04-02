@@ -9,6 +9,8 @@
 
 #include "airport.h"
 
+using namespace std;
+
 #define NUM_AIRPORTS  4578
 
 struct airport {
