@@ -161,4 +161,3 @@ int main() {
     // cout << "ID of airport " << a << " is " << airports.find(a).id << endl;
 >>>>>>> a70db87703faefc0b9ea7e10272abfce99e897e0
 }
-

@@ -12,10 +12,11 @@
 #define NUM_FLIGHTS  15190
 
 typedef struct {
-  char name[3]; // Index of restaurant from 0 to NUM_FLIGHTS-1.
-  int id[10]; // Index of restaurant from 0 to NUM_FLIGHTS-1.
+  string start; // 
+  string end; // 
+  int id_start; // 
+  int id_end; // 
   uint16_t dist;  // Distance between the two airports.
 };
-
 
 #endif
