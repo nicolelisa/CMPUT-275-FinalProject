@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <list>
+#include <utility>
 #include "wdigraph.h"
 #include "digraph.h"
 #include "airport.h"
@@ -15,6 +16,15 @@
 using namespace std;
 
 #define ll long long
+
+// typedef pair<float, float> pff;
+
+// struct flight {
+//   int32_t start_lat;
+//   int32_t start_lon;
+//   int32_t end_lat;
+//   int32_t end_lon;
+// };
 
 void readAirports(unordered_map<string, airport>& airports, string filename) {
     ifstream file;
@@ -57,15 +67,13 @@ void readAirports(unordered_map<string, airport>& airports, string filename) {
 
         str_end = line.find(",", str_start+1);
         str_read = line.substr(str_start+1, str_end-str_start-1);
-        int32_t lat = static_cast <int32_t> (stof(str_read) * 100000);
-        // cout << "  LAT: " << lat;
+        float lat = stof(str_read);
         currentAirport.lat = lat;
 
         str_start = line.find(",", str_start+1);
         str_end = line.find(",", str_start+1);
         str_read = line.substr(str_start+1, str_end-str_start-1);
-        int32_t lon = static_cast <int32_t> (stof(str_read) * 100000);
-        // cout << "  LON: " << lon << endl;
+        float lon = stof(str_read);
         currentAirport.lon = lon;
 
         airports.insert({name, currentAirport});
@@ -73,11 +81,10 @@ void readAirports(unordered_map<string, airport>& airports, string filename) {
     file.close();
 }
 
-void readInData(WDigraph& flights, string filename) {
-    //string file = "CanadaAirportFlights.csv";
+void readFlights(unordered_map<string, ll>& flights, const vector<string>& destinations, string filename, unordered_map<string, airport>& airports) {
     ifstream file;
-    string start, end, line;
-    int found1, found2, iStart, iEnd;
+    string path, start, end, line, str_read;
+    int str_start, str_end;
   
     file.open(filename);
 
@@ -87,79 +94,107 @@ void readInData(WDigraph& flights, string filename) {
     }
 
     //throws away the first line which is just labels
-    getline(file, start);
-
-    int counter = 1;
+    getline(file, line);
 
     while (getline(file, line)) {
-        found1 = 0;
-
-        for (int i = 0; i < 3; i++) {
-            found1 = line.find(",", found1+1);
+        str_start = 0;
+        for (int i = 0; i < 2; i++) {
+            str_start = line.find(",", str_start+1);
         }
-       
-        found2 = line.find(",", found1+1);
-        start = line.substr(found1+1, found2-found1-1);
-      
-        found1 = line.find(",", found2+1);
-        found2 = line.find(",", found1+1);
-        end = line.substr(found1+1, found2-found1-1);
+        str_end = line.find(",", str_start+1);
+        start = line.substr(str_start+1, str_end-str_start-1);
+        str_start = line.find(",", str_end+1);
+        str_end = line.find(",", str_start+1);
+        end = line.substr(str_start+1, str_end-str_start-1);
+        if(find(destinations.begin(), destinations.end(), start) != destinations.end()) {
+            if (find(destinations.begin(), destinations.end(), end) != destinations.end()) {
 
-        cout << counter << ": ";
-        cout << "Airport 1: " << start << " ";
-        cout << "Airport 2: " << end << endl;
+                path = start + end;
+                auto search_start = airports.find(start);
+                auto search_end = airports.find(end);
+                
 
-        if (start.substr(1,1) != "N" && end.substr(1,1) != "N") {
-            iStart = stoi(start);
-            // flights.addVertex(iStart);
+                if (search_start != airports.end() && search_end != airports.end()) {
+                    auto search_flight = flights.find(path);                 
+                    if (search_flight == flights.end()) {
+                        Coordinate c1(search_start->second.lat, search_start->second.lon);
+                        Coordinate c2(search_end->second.lat, search_end->second.lon);
+                        ll distance = HaversineDistance(c1, c2);
+                        // cout << "Distance between destinations " << path << " is: " << distance << endl;
+                        flights.insert({path, distance});
+                    }
+                }
+            }
         }
-        
-        if (end.substr(1,1) != "N") {
-            iEnd = stoi(end);
-            // flights.addVertex(iEnd);
-        }
-
-        // Still need to get their long and lat then add the weighted edge to the graphs!!!!
-
-        counter++;
     }
     file.close();
 }
 
-ll findDistance(ll lon1, ll lat1, ll lon2, ll lat2) {
-    ll distance = sqrt((lon1-lon2)*(lon1-lon2) + (lat1-lat2)*(lat1-lat2));
-    return distance;
-}
-
-
 int main() {
+    
     string a;
-    // WDigraph flights;
-    // readInData(flights, "data/flightData.csv");
+
+    /* Read in Airports from CSV file */
     unordered_map<string, airport> airports;
     readAirports(airports, "data/airportData.csv");
     //   cout << "Enter an airport: ";
     //   cin >> a;
     //   unordered_map<string,airport>::const_iterator got = airports.find (a);
-
     // if ( got == airports.end() )
     //   cout << "not found";
     // else
     //   cout << got->first << " is " << got->second.id;
-
     // cout << endl;
+
+    
+    /* Read in user list of airports and create a vector from the airports */
+    // vector<string> destinations;
+    // int n;
+    // cout << "How many destinations would you like to visit? ";
+    // cin >> n;
+    // cout << "Enter a list of airports (3): ";
+    // for (int i = 0; i<n; ++i) {
+    //     cin >> a;
+    //     destinations.push_back(a);
+    // }
+    // // output the list of airports
+    // cout << "The list of airports is: ";
+    // for (vector<string>::const_iterator i = destinations.begin(); i != destinations.end(); ++i) {
+    //     cout << *i << ' ';
+    // }
+    // cout << endl;
+
+    /* Read in Flights to a Hash table */
     vector<string> destinations;
-    int n = 3;
-    // string a;
-    cout << "Enter a list of airports (3): ";
-    for (int i = 0; i<n; ++i) {
-        cin >> a;
-        destinations.push_back(a);
-    }
+    destinations.push_back("YEG"); 
+    destinations.push_back("YVR"); 
+    destinations.push_back("YYC");
     cout << "The list of airports is: ";
     for (vector<string>::const_iterator i = destinations.begin(); i != destinations.end(); ++i) {
         cout << *i << ' ';
     }
     cout << endl;
+    string flight_data = "data/flightData.csv";
+    unordered_map<string,ll> flights;
+    readFlights(flights, destinations, flight_data, airports);
+    string start,end;
+    cout << "Enter a starting airport for the flight: ";
+    cin >> start;    
+    cout << "Enter an end airport for the flight: ";
+    cin >> end;
+    a = start + end;
+    auto got = flights.find(a);
+    if (got == flights.end())
+      cout << "Not Found";
+    else
+      cout << "Distance between desintations " << got->first << " is: " << got->second;
+    cout << endl;
+
+    /* Testing for brute force */
+    // vector<string> path = bruteforce(destinations, airports);
+    // cout << "Result: ";
+    // for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
+    //     cout << *i << ' ';
+    // }
 }
 
