@@ -85,17 +85,21 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
     // vector with pairs of the airport names and ids
     vector<pair<string, int>> bothIDs;
     
-    for (int i = 0; i < requestedAirports.size(); i++) {
+    for (int i = 0; i < (int)requestedAirports.size(); i++) {
         numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
         bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
 
     }
 
-    for (int i = 0; i < bothIDs.size(); i++) {
-        for (int j = 0; j < bothIDs.size(); j++) {
+    for (int i = 0; i < (int)bothIDs.size(); i++) {
+        for (int j = 0; j < (int)bothIDs.size(); j++) {
             if (i !=j) {
                 jointNames = bothIDs.at(i).first + bothIDs.at(j).first;
-                dist = distances.find(jointNames)->second;
+                if (distances.find(jointNames) != distances.end()) {    
+                    dist = distances.find(jointNames)->second;
+                } else {
+                    dist = NULL;
+                }
 
                 //dist = 
                 // convert i and j back to strings concatenate them back together
