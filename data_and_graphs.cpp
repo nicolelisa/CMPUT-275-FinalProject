@@ -9,7 +9,6 @@
 #include <list>
 #include <utility>
 #include "wdigraph.h"
-#include "digraph.h"
 #include "airport.h"
 #include "nn.h"
 #include "bruteforce.h"
@@ -203,6 +202,8 @@ int main() {
     for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
         cout << *i << ' ';
     }
+
+    WDigraph graph = createGraph(destinations, flights, airports);
 
 }
 
