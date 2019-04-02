@@ -88,6 +88,7 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
     for (int i = 0; i < (int)requestedAirports.size(); i++) {
         numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
         bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
+        airportGraph.addVertex(numericalID);
 
     }
 
@@ -95,6 +96,7 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
         for (int j = 0; j < (int)bothIDs.size(); j++) {
             if (i !=j) {
                 jointNames = bothIDs.at(i).first + bothIDs.at(j).first;
+                cout << jointNames << endl;
                 if (distances.find(jointNames) != distances.end()) {    
                     dist = distances.find(jointNames)->second;
                 } else {

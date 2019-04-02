@@ -211,7 +211,9 @@ int main() {
     cout << endl;
 
     /* Testing for nearest neighbours */
-    //WDigraph graph = createGraph(destinations, flights, airports);
+    // cout << "Building Graph" << endl;
+    // WDigraph graph = createGraph(destinations, flights, airports);
+    // cout << graph.size() << endl;
 
 
 }
