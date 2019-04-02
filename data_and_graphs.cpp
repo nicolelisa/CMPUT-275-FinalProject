@@ -50,12 +50,12 @@ void readInData(WDigraph& airports, string filename) {
 
         if (start.substr(1,1) != "N" && end.substr(1,1) != "N") {
             iStart = stoi(start);
-            // airports.addVertex(iStart);
+            //airports.addVertex(iStart);
         }
         
         if (end.substr(1,1) != "N") {
             iEnd = stoi(end);
-            // airports.addVertex(iEnd);
+            //airports.addVertex(iEnd);
         }
 
         // Still need to get their long and lat then add the weighted edge to the graphs!!!!
@@ -73,6 +73,6 @@ ll findDistance(ll lon1, ll lat1, ll lon2, ll lat2) {
 
 int main() {
     WDigraph airports;
-    readInData(airports, "flightData.csv");
+    readInData(airports, "data/flightData.csv");
 }
 
