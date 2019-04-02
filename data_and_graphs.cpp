@@ -10,8 +10,8 @@
 #include "wdigraph.h"
 #include "digraph.h"
 #include "airport.h"
-#include "bruteforce.h"
 #include "nn.h"
+#include "bruteforce.h"
 
 using namespace std;
 
@@ -192,7 +192,7 @@ int main() {
     cout << endl;
 
     /* Testing for brute force */
-    // vector<string> path = bruteforce(destinations, airports);
+    // vector<string> path = bruteforce(destinations);
     // cout << "Result: ";
     // for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
     //     cout << *i << ' ';

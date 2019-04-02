@@ -7,8 +7,12 @@
 #ifndef _BRUTEFORCE_H_
 #define _BRUTEFORCE_H_
 
-#include "bruteforce.h"
+// #include <string>
 
 #define NUM_FLIGHTS  15190
+
+using namespace std;
+
+vector<string> bruteforce(vector<string> dest);
 
 #endif

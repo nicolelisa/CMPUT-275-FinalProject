@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include "bruteforce.h"
-#include "airport.h"
 
 using namespace std;
 
@@ -10,7 +9,7 @@ using namespace std;
 
 */
 
-vector<string> bruteforce(vector<string> dest, const unordered_map<string, airport>& airports) {
+vector<string> bruteforce(vector<string>& dest) {
 	vector<string> test;
 	test.push_back("HELLO");
 	return test;

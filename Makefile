@@ -1,15 +1,15 @@
 CC= g++
 CFLAGS= -c -Wall -O2 -std=c++11 
 LFLAGS=
-PROGS= airport
-OBJS= digraph.o airport.o
+PROGS= flightpath
+OBJS= digraph.o flightpath.o bruteforce.o nn.o
 
 # executable targets
-airport: $(OBJS)
-	$(CC) airport.o -o airport
+flightpath: $(OBJS)
+	$(CC) flightpath.o -o flightpath
 
-airport.o: data_and_graphs.cpp digraph.o airport.h wdigraph.h nn.o bruteforce.o
-	$(CC) data_and_graphs.cpp -o airport.o $(CFLAGS)
+flightpath.o: data_and_graphs.cpp digraph.o airport.h wdigraph.h nn.o bruteforce.o 
+	$(CC) data_and_graphs.cpp -o flightpath.o $(CFLAGS)
 
 digraph.o: digraph.cpp digraph.h
 	$(CC) digraph.cpp -o digraph.o $(CFLAGS)
