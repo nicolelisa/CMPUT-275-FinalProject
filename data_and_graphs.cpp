@@ -148,4 +148,3 @@ int main() {
   cout << endl;
     // cout << "ID of airport " << a << " is " << airports.find(a).id << endl;
 }
-
