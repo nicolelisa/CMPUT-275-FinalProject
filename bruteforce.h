@@ -16,7 +16,7 @@ using namespace std;
 vector<string> bruteforce(vector<string> dest, const unordered_map<string, airport>& airports) {
 	vector<string> test;
 	string home = dest.front();
-	dest.erase(dest.begin())
+	dest.erase(dest.begin());
 	// dest.begin());
 	test.push_back(home);
 	return test;
