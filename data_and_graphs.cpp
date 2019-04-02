@@ -109,20 +109,12 @@ void readInData(WDigraph& flights, string filename) {
 
         if (start.substr(1,1) != "N" && end.substr(1,1) != "N") {
             iStart = stoi(start);
-<<<<<<< HEAD
-            //airports.addVertex(iStart);
-=======
             // flights.addVertex(iStart);
->>>>>>> a70db87703faefc0b9ea7e10272abfce99e897e0
         }
         
         if (end.substr(1,1) != "N") {
             iEnd = stoi(end);
-<<<<<<< HEAD
-            //airports.addVertex(iEnd);
-=======
             // flights.addVertex(iEnd);
->>>>>>> a70db87703faefc0b9ea7e10272abfce99e897e0
         }
 
         // Still need to get their long and lat then add the weighted edge to the graphs!!!!
@@ -139,10 +131,6 @@ ll findDistance(ll lon1, ll lat1, ll lon2, ll lat2) {
 
 
 int main() {
-<<<<<<< HEAD
-    WDigraph airports;
-    readInData(airports, "data/flightData.csv");
-=======
     string a;
     // WDigraph flights;
     // readInData(flights, "data/flightData.csv");
@@ -159,5 +147,5 @@ int main() {
 
   cout << endl;
     // cout << "ID of airport " << a << " is " << airports.find(a).id << endl;
->>>>>>> a70db87703faefc0b9ea7e10272abfce99e897e0
 }
+
