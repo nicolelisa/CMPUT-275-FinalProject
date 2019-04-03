@@ -10,8 +10,6 @@
 #include <string>
 #include <vector>
 
-
-
 using namespace std;
 
 // ll getDistance(vector<string>& dest, string home) {
@@ -49,14 +47,14 @@ void findPermutations(vector<string>& dest, vector<vector<string>>& perms, int l
     }
 }
 
-void bruteforce(vector<string>& dest, const unordered_map<string, airport>& airports, const unordered_map<string, ll>& flights) {
+void bruteforce(vector<string>& dest, const unordered_map<string, airport>& airports, const unordered_map<string, ll>& flights, 
+				const WDigraph pathGraph, const unordered_map<int, string>& idsToAirports) {
 
     vector<string> min_path = dest;
     ll min_distance = 0;
 
 	string home = dest.front();
 	dest.erase(dest.begin());
-	// test.push_back(home);
 	int count = dest.size();
 	vector<vector<string>> perms;
     findPermutations(dest, perms, 1, count);

@@ -200,10 +200,10 @@ int main() {
     cout << endl;
 
     /* Testing for brute force */
-    bruteforce(destinations, airports, flights);
+    bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
 
     /* Testing for nearest neighbours */
-    // cout << "Building Graph" << endl;
-    // WDigraph graph = createGraph(destinations, flights, airports);
+    
+
 }
 
