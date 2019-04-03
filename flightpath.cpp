@@ -122,6 +122,35 @@ void readFlights(unordered_map<string, ll>& flights, string filename, unordered_
     file.close();
 }
 
+WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<string, airport>& airportInfo) {
+    WDigraph airportGraph;
+    string path, start_name, end_name;
+
+    // Iterate over the flights using iterator
+    auto i = flights.begin();
+    while(i != flights.end()) {
+        int start_id = -1;
+        int end_id = -1;
+        long long dist = i->second;
+        start_name = i->first.substr(0,3);
+        end_name = i->first.substr(3,3);
+        auto search_start = airportInfo.find(start_name);
+        if (search_start != airportInfo.end()) {
+            start_id = search_start->second.id;
+        }
+        auto search_end = airportInfo.find(end_name);
+        if (search_end != airportInfo.end()) {
+            end_id = search_end->second.id;
+        }
+        cout << start_name << " " << start_id << " " << end_name << " " << end_id << " " << i->second << endl;
+        if (start_id >= 0 && end_id >= 0) {
+            airportGraph.addEdge(start_id, end_id, dist);
+        }
+        ++i;
+    }
+    return airportGraph;
+}
+
 int main() {
     
     string a;
@@ -136,6 +165,8 @@ int main() {
     string flight_data = "data/flightData.csv";
     unordered_map<string,ll> flights;
     readFlights(flights, flight_data, airports);
+
+    buildGraph(flights, airports);
     
     /* Read in user list of airports and create a vector from the airports */
     vector<string> destinations;
