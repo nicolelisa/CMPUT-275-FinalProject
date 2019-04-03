@@ -133,79 +133,79 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
 
 // Needs a weighted graph of the airports of interest
 //lso needs the numerical ID of the airport that we are starting at.
-void nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports, 
-                                                 unordered_map<string, airport>& airportInfo) {
-    ll distanceTravelled = 0;
-    ll shortestPathSoFar = -1;
-    int stopNumber = 0;
-    long long cost = -1;
-    int nearestAirport;
-    bool hasPath = true;
+// void nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports, 
+//                                                  unordered_map<string, airport>& airportInfo) {
+//     ll distanceTravelled = 0;
+//     ll shortestPathSoFar = -1;
+//     int stopNumber = 0;
+//     long long cost = -1;
+//     int nearestAirport;
+//     bool hasPath = true;
 
-    unordered_map<int, string> numsToNames = numberToName(requestedAirports, airportInfo);
-    int airportStart = airportInfo.find(requestedAirports.at(0))->second.id;
+//     unordered_map<int, string> numsToNames = numberToName(requestedAirports, airportInfo);
+//     int airportStart = airportInfo.find(requestedAirports.at(0))->second.id;
 
-    //unordered_set<int>::const_iterator Digraph::neighbours(int v)
-    //int neighbours;
-    int curNode = airportStart;
+//     //unordered_set<int>::const_iterator Digraph::neighbours(int v)
+//     //int neighbours;
+//     int curNode = airportStart;
 
-    // key is airportID and value is the number of edges leading to it yet.
-    map<int, int> airportsTravelled;
-    // Set beginning node to exist in the map but not have any edges to it yet.
-    airportsTravelled[airportStart] = 0;
-    stopNumber++;
-    while ((int)airportsTravelled.size() < airportGraph.size()) {
-        for (auto iter = airportGraph.neighbours(curNode); iter != airportGraph.endIterator(curNode); iter++) {
-            if (airportGraph.isEdge(curNode, *iter) && (airportsTravelled.find(*iter) == airportsTravelled.end())) {
-                cost = airportGraph.getCost(curNode, *iter);
-                if (cost != -1) {
-                    if (shortestPathSoFar == -1) {
-                        shortestPathSoFar = cost;
-                        nearestAirport = *iter;
-                    } else if (shortestPathSoFar > cost) {
-                        shortestPathSoFar = cost;  
-                        nearestAirport = *iter;
-                    }
-                }
-            }
-        }
-        if (shortestPathSoFar != -1) {
-            distanceTravelled += shortestPathSoFar;
-            shortestPathSoFar = -1;
-            curNode = nearestAirport;
-            airportsTravelled[nearestAirport] = stopNumber;
-            stopNumber++;
-        } else {
-            hasPath = false;
-            break;            
-        }
-    }
+//     // key is airportID and value is the number of edges leading to it yet.
+//     map<int, int> airportsTravelled;
+//     // Set beginning node to exist in the map but not have any edges to it yet.
+//     airportsTravelled[airportStart] = 0;
+//     stopNumber++;
+//     while ((int)airportsTravelled.size() < airportGraph.size()) {
+//         for (auto iter = airportGraph.neighbours(curNode); iter != airportGraph.endIterator(curNode); iter++) {
+//             if (airportGraph.isEdge(curNode, *iter) && (airportsTravelled.find(*iter) == airportsTravelled.end())) {
+//                 cost = airportGraph.getCost(curNode, *iter);
+//                 if (cost != -1) {
+//                     if (shortestPathSoFar == -1) {
+//                         shortestPathSoFar = cost;
+//                         nearestAirport = *iter;
+//                     } else if (shortestPathSoFar > cost) {
+//                         shortestPathSoFar = cost;  
+//                         nearestAirport = *iter;
+//                     }
+//                 }
+//             }
+//         }
+//         if (shortestPathSoFar != -1) {
+//             distanceTravelled += shortestPathSoFar;
+//             shortestPathSoFar = -1;
+//             curNode = nearestAirport;
+//             airportsTravelled[nearestAirport] = stopNumber;
+//             stopNumber++;
+//         } else {
+//             hasPath = false;
+//             break;            
+//         }
+//     }
 
-    string lastAirport;
-    string nextAirport;
-    if (airportGraph.isEdge(curNode, airportStart) && airportGraph.getCost(curNode, airportStart) != -1 && hasPath) {
-        for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
-            //cout << it->first << " " << it->second << endl;
-            cout << numsToNames[it->first] << " ";
-        }
-        distanceTravelled += airportGraph.getCost(curNode, airportStart);
+//     string lastAirport;
+//     string nextAirport;
+//     if (airportGraph.isEdge(curNode, airportStart) && airportGraph.getCost(curNode, airportStart) != -1 && hasPath) {
+//         for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
+//             //cout << it->first << " " << it->second << endl;
+//             cout << numsToNames[it->first] << " ";
+//         }
+//         distanceTravelled += airportGraph.getCost(curNode, airportStart);
 
-        lastAirport = numsToNames[airportStart];
-        cout << lastAirport << endl;
+//         lastAirport = numsToNames[airportStart];
+//         cout << lastAirport << endl;
 
-        cout << "Distance: " << distanceTravelled << endl;
+//         cout << "Distance: " << distanceTravelled << endl;
 
-    } else {
-        cout << "Path: ";
-        for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
-            //cout << it->first << " " << it->second << endl;
-            nextAirport = numsToNames[it->first];
-            cout << nextAirport << " ";
-        }
-        cout << endl << "No path to complete rest of trip" << endl;
+//     } else {
+//         cout << "Path: ";
+//         for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
+//             //cout << it->first << " " << it->second << endl;
+//             nextAirport = numsToNames[it->first];
+//             cout << nextAirport << " ";
+//         }
+//         cout << endl << "No path to complete rest of trip" << endl;
 
-    }     
-}
+//     }     
+// }
 
 
 // Modified nn 
@@ -213,7 +213,10 @@ void nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports,
 // find the shortest distrance between cur Airport and possible next airports.
 // if there is not a direct flight to the next airport, use dijkstra to find the shortest path
 // to that airport
+// If no path, distance = -1
+void modifiedNearestNeighbour(WDigraph& graph, vector<string> destinations, unordered_map<string, ll>& distances) {
+    distanceTravelled = 0;
 
-pair <ll 
+} 
 
 #endif
