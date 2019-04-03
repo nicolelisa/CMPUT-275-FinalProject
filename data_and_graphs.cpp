@@ -197,23 +197,23 @@ int main() {
     cout << endl;
 
     /* Testing for brute force */
-    vector<string> path = bruteforce(destinations, airports);
-    cout << "Result: ";
-    for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
-        cout << *i << ' ';
-    }
+    // vector<string> path = bruteforce(destinations, airports);
+    // cout << "Result: ";
+    // for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
+    //     cout << *i << ' ';
+    // }
     
-    cout << endl;
-    cout << " Airports: ";
-    for (auto i = destinations.begin(); i != destinations.end(); ++i) {
-        cout << *i << " ";
-    }
-    cout << endl;
+    // cout << endl;
+    // cout << " Airports: ";
+    // for (auto i = destinations.begin(); i != destinations.end(); ++i) {
+    //     cout << *i << " ";
+    // }
+    // cout << endl;
 
     /* Testing for nearest neighbours */
     // cout << "Building Graph" << endl;
     // WDigraph graph = createGraph(destinations, flights, airports);
-    // pair<long long, vector<string>> output = nearestNeighbour(graph, destinations, airports);
+    // nearestNeighbour(graph, destinations, airports);
     // if (output.second.size() < destinations.size()) {
     //     cout << "Distance: " << output.first << endl;
     //     cout << "Path: ";

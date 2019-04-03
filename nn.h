@@ -15,6 +15,7 @@
 #include "wdigraph.h"
 #include "digraph.h"
 #include "airport.h"
+#include "dijkstra.h"
 
 #define ll long long
 
@@ -132,10 +133,10 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
 
 // Needs a weighted graph of the airports of interest
 //lso needs the numerical ID of the airport that we are starting at.
-pair<long long, vector<string>> nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports, 
+void nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports, 
                                                  unordered_map<string, airport>& airportInfo) {
-    long long distanceTravelled = 0;
-    long long shortestPathSoFar = -1;
+    ll distanceTravelled = 0;
+    ll shortestPathSoFar = -1;
     int stopNumber = 0;
     long long cost = -1;
     int nearestAirport;
@@ -144,8 +145,6 @@ pair<long long, vector<string>> nearestNeighbour(WDigraph& airportGraph, vector<
     unordered_map<int, string> numsToNames = numberToName(requestedAirports, airportInfo);
     int airportStart = airportInfo.find(requestedAirports.at(0))->second.id;
 
-    pair<long long, vector<string>> output;
-    vector<string> order;
     //unordered_set<int>::const_iterator Digraph::neighbours(int v)
     //int neighbours;
     int curNode = airportStart;
@@ -187,32 +186,34 @@ pair<long long, vector<string>> nearestNeighbour(WDigraph& airportGraph, vector<
     if (airportGraph.isEdge(curNode, airportStart) && airportGraph.getCost(curNode, airportStart) != -1 && hasPath) {
         for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
             //cout << it->first << " " << it->second << endl;
-            nextAirport = numsToNames[it->first];
-            order.push_back(nextAirport);
+            cout << numsToNames[it->first] << " ";
         }
         distanceTravelled += airportGraph.getCost(curNode, airportStart);
 
         lastAirport = numsToNames[airportStart];
-        order.push_back(lastAirport);
+        cout << lastAirport << endl;
 
-        output = make_pair(distanceTravelled, order);
+        cout << "Distance: " << distanceTravelled << endl;
+
     } else {
         cout << "Path: ";
         for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
             //cout << it->first << " " << it->second << endl;
             nextAirport = numsToNames[it->first];
-            order.push_back(nextAirport);
             cout << nextAirport << " ";
         }
         cout << endl << "No path to complete rest of trip" << endl;
 
-    }
-
-    
-
-    return output;
-     
+    }     
 }
 
+
+// Modified nn 
+// calculate distances between airports
+// find the shortest distrance between cur Airport and possible next airports.
+// if there is not a direct flight to the next airport, use dijkstra to find the shortest path
+// to that airport
+
+pair <ll 
 
 #endif
