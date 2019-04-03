@@ -11,6 +11,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <map>
 #include "wdigraph.h"
 #include "digraph.h"
 #include "airport.h"
@@ -73,29 +74,47 @@ void readInData(WDigraph& flights, string filename) {
 }
 
 
+vector<pair<string, int>> nameToNumber(vector<string> requestedAirports, unordered_map<string, airport>& airportInfo) {
+    vector<pair<string, int>> bothIDs;
+    for (int i = 0; i < (int)requestedAirports.size(); i++) {
+        int numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
+        bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
+    }
+    return bothIDs;
+}
+
+unordered_map<int, string> numberToName(vector<string> requestedAirports, unordered_map<string, airport>& airportInfo) {
+    unordered_map<int, string> bothIDs;
+    for (int i = 0; i < (int)requestedAirports.size(); i++) {
+        int numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
+        //bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
+        bothIDs[numericalID] = requestedAirports.at(i);
+    }
+    return bothIDs;
+}
+
+
 // nameOfAirports = destination on main file
 // distances = flights
 WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, long long>& distances, 
                       unordered_map<string, airport>& airportInfo) {
     WDigraph airportGraph;
-    int numericalID;
     string jointNames;
     long long dist;
 
     // vector with pairs of the airport names and ids
-    vector<pair<string, int>> bothIDs;
-    
-    for (int i = 0; i < requestedAirports.size(); i++) {
-        numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
-        bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
+    vector<pair<string, int>> bothIDs = nameToNumber(requestedAirports, airportInfo);
 
-    }
-
-    for (int i = 0; i < bothIDs.size(); i++) {
-        for (int j = 0; j < bothIDs.size(); j++) {
+    for (int i = 0; i < (int)bothIDs.size(); i++) {
+        for (int j = 0; j < (int)bothIDs.size(); j++) {
             if (i !=j) {
                 jointNames = bothIDs.at(i).first + bothIDs.at(j).first;
-                dist = distances.find(jointNames)->second;
+                //cout << jointNames << endl;
+                if (distances.find(jointNames) != distances.end()) {    
+                    dist = distances.find(jointNames)->second;
+                } else {
+                    dist = -1;
+                }
 
                 //dist = 
                 // convert i and j back to strings concatenate them back together
@@ -112,25 +131,88 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
 
 
 // Needs a weighted graph of the airports of interest
-// also needs the numerical ID of the airport that we are starting at.
-// pair<long long, vector<string>> nearestNeighbour(WDigraph& airportGraph, int StartAirportID) {
-//     long long distanceTravelled = 0;
-//     //unordered_set<int>::const_iterator Digraph::neighbours(int v)
-//     int neighbours;
-//     int curNode = StartAirportID;
+//lso needs the numerical ID of the airport that we are starting at.
+pair<long long, vector<string>> nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports, 
+                                                 unordered_map<string, airport>& airportInfo) {
+    long long distanceTravelled = 0;
+    long long shortestPathSoFar = -1;
+    int stopNumber = 0;
+    long long cost = -1;
+    int nearestAirport;
+    bool hasPath = true;
 
-//     // key is airportID and value is the number of edges leading to it yet.
-//     map<int, int> airportsTravelled;
-//     // Set beginning node to exist in the map but not have any edges to it yet.
-//     airportsTravelled[curNode] = 0;
-//     while (airportsTravelled.size() != airportGraph.size()) {
-//         if (airportsTravelled.count(curNode) == 0) {
-//             //Case if airport does not exist in the map yet
-//         } 
+    unordered_map<int, string> numsToNames = numberToName(requestedAirports, airportInfo);
+    int airportStart = airportInfo.find(requestedAirports.at(0))->second.id;
 
+    pair<long long, vector<string>> output;
+    vector<string> order;
+    //unordered_set<int>::const_iterator Digraph::neighbours(int v)
+    //int neighbours;
+    int curNode = airportStart;
 
-//     }
+    // key is airportID and value is the number of edges leading to it yet.
+    map<int, int> airportsTravelled;
+    // Set beginning node to exist in the map but not have any edges to it yet.
+    airportsTravelled[airportStart] = 0;
+    stopNumber++;
+    while ((int)airportsTravelled.size() < airportGraph.size()) {
+        for (auto iter = airportGraph.neighbours(curNode); iter != airportGraph.endIterator(curNode); iter++) {
+            if (airportGraph.isEdge(curNode, *iter) && (airportsTravelled.find(*iter) == airportsTravelled.end())) {
+                cost = airportGraph.getCost(curNode, *iter);
+                if (cost != -1) {
+                    if (shortestPathSoFar == -1) {
+                        shortestPathSoFar = cost;
+                        nearestAirport = *iter;
+                    } else if (shortestPathSoFar > cost) {
+                        shortestPathSoFar = cost;  
+                        nearestAirport = *iter;
+                    }
+                }
+            }
+        }
+        if (shortestPathSoFar != -1) {
+            distanceTravelled += shortestPathSoFar;
+            shortestPathSoFar = -1;
+            curNode = nearestAirport;
+            airportsTravelled[nearestAirport] = stopNumber;
+            stopNumber++;
+        } else {
+            hasPath = false;
+            break;            
+        }
+    }
 
-// }
+    string lastAirport;
+    string nextAirport;
+    if (airportGraph.isEdge(curNode, airportStart) && airportGraph.getCost(curNode, airportStart) != -1 && hasPath) {
+        for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
+            //cout << it->first << " " << it->second << endl;
+            nextAirport = numsToNames[it->first];
+            order.push_back(nextAirport);
+        }
+        distanceTravelled += airportGraph.getCost(curNode, airportStart);
+
+        lastAirport = numsToNames[airportStart];
+        order.push_back(lastAirport);
+
+        output = make_pair(distanceTravelled, order);
+    } else {
+        cout << "Path: ";
+        for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
+            //cout << it->first << " " << it->second << endl;
+            nextAirport = numsToNames[it->first];
+            order.push_back(nextAirport);
+            cout << nextAirport << " ";
+        }
+        cout << endl << "No path to complete rest of trip" << endl;
+
+    }
+
+    
+
+    return output;
+     
+}
+
 
 #endif
