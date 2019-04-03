@@ -77,7 +77,7 @@ void readAirports(unordered_map<string, airport>& airports, string filename) {
     file.close();
 }
 
-void readFlights(unordered_map<string, ll>& flights, const vector<string>& destinations, string filename, unordered_map<string, airport>& airports) {
+void readFlights(unordered_map<string, ll>& flights, string filename, unordered_map<string, airport>& airports) {
     ifstream file;
     string path, start, end, line;
     int str_start, str_end;
@@ -101,32 +101,24 @@ void readFlights(unordered_map<string, ll>& flights, const vector<string>& desti
         }
         str_end = line.find(",", str_start+1);
         start = line.substr(str_start+1, str_end-str_start-1);
-        
-        // checks if the start destination of the flight is in the user inputted list
-        if(find(destinations.begin(), destinations.end(), start) != destinations.end()) {
 
         // gets ending airport
         str_start = line.find(",", str_end+1);
         str_end = line.find(",", str_start+1);
         end = line.substr(str_start+1, str_end-str_start-1);
+                
+        path = start + end;
 
-            // checks if the end destination of the flight is in the user inputted list
-            if (find(destinations.begin(), destinations.end(), end) != destinations.end()) {
-                path = start + end;
-
-                // Makes sure that starting and ending airports exist
-                auto search_start = airports.find(start);
-                auto search_end = airports.find(end);
-                if (search_start != airports.end() && search_end != airports.end()) {
-                    auto search_flight = flights.find(path);                 
-                    if (search_flight == flights.end()) {
-                        Coordinate c1(search_start->second.lat, search_start->second.lon);
-                        Coordinate c2(search_end->second.lat, search_end->second.lon);
-                        ll distance = HaversineDistance(c1, c2);
-                        // cout << "Distance between destinations " << path << " is: " << distance << endl;
-                        flights.insert({path, distance});
-                    }
-                }
+        // Makes sure that starting and ending airports exist
+        auto search_start = airports.find(start);
+        auto search_end = airports.find(end);
+        if (search_start != airports.end() && search_end != airports.end()) {
+            auto search_flight = flights.find(path);                 
+            if (search_flight == flights.end()) {
+                Coordinate c1(search_start->second.lat, search_start->second.lon);
+                Coordinate c2(search_end->second.lat, search_end->second.lon);
+                ll distance = HaversineDistance(c1, c2);
+                flights.insert({path, distance});
             }
         }
     }
@@ -137,18 +129,14 @@ int main() {
     
     string a;
 
-    /* Read in Airports from CSV file */
+    /* Read in Airports to hash table from CSV file */
     unordered_map<string, airport> airports;
     readAirports(airports, "data/airportData.csv");
-    //   cout << "Enter an airport: ";
-    //   cin >> a;
-    //   unordered_map<string,airport>::const_iterator got = airports.find (a);
-    // if ( got == airports.end() )
-    //   cout << "not found";
-    // else
-    //   cout << got->first << " is " << got->second.id;
-    // cout << endl;
 
+    /* Read in Flights to hash table from CSV file */
+    string flight_data = "data/flightData.csv";
+    unordered_map<string,ll> flights;
+    readFlights(flights, flight_data, airports);
     
     /* Read in user list of airports and create a vector from the airports */
     vector<string> destinations;
@@ -180,9 +168,7 @@ int main() {
         cout << *i << " ";
     }
     cout << endl;
-    string flight_data = "data/flightData.csv";
-    unordered_map<string,ll> flights;
-    readFlights(flights, destinations, flight_data, airports);
+
     string start,end;
     cout << "Enter a starting airport for the flight: ";
     cin >> start;
@@ -203,13 +189,5 @@ int main() {
     // cout << "Building Graph" << endl;
     // WDigraph graph = createGraph(destinations, flights, airports);
     // pair<long long, vector<string>> output = nearestNeighbour(graph, destinations, airports);
-    // if (output.second.size() < destinations.size()) {
-    //     cout << "Distance: " << output.first << endl;
-    //     cout << "Path: ";
-    //     for (int i = 0; i < output.second.size();++i) {
-    //         cout << output.second.at(i) << " ";
-    //     }
-    //     cout << endl;
-    // }
 }
 
