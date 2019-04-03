@@ -169,18 +169,18 @@ int main() {
     }
     cout << endl;
 
-    string start,end;
-    cout << "Enter a starting airport for the flight: ";
-    cin >> start;
-    cout << "Enter an end airport for the flight: ";
-    cin >> end;
-    a = start + end;
-    auto got = flights.find(a);
-    if (got == flights.end())
-      cout << "Not Found";
-    else
-      cout << "Distance between desintations " << got->first << " is: " << got->second;
-    cout << endl;
+    // string start,end;
+    // cout << "Enter a starting airport for the flight: ";
+    // cin >> start;
+    // cout << "Enter an end airport for the flight: ";
+    // cin >> end;
+    // a = start + end;
+    // auto got = flights.find(a);
+    // if (got == flights.end())
+    //   cout << "Not Found";
+    // else
+    //   cout << "Distance between desintations " << got->first << " is: " << got->second;
+    // cout << endl;
 
     /* Testing for brute force */
     bruteforce(destinations, airports, flights);
