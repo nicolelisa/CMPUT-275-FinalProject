@@ -13,8 +13,8 @@ flightpath: $(OBJS)
 
 # object targets
 
-flightpath.o: data_and_graphs.cpp bruteforce.h nn.h digraph.h airport.h wdigraph.h
-	$(CC) data_and_graphs.cpp -o flightpath.o $(CFLAGS)
+flightpath.o: flightpath.cpp bruteforce.h nn.h digraph.h airport.h wdigraph.h
+	$(CC) flightpath.cpp -o flightpath.o $(CFLAGS)
 
 digraph.o: digraph.cpp digraph.h
 	$(CC) digraph.cpp -o digraph.o $(CFLAGS)
