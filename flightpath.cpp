@@ -197,18 +197,7 @@ int main() {
     cout << endl;
 
     /* Testing for brute force */
-    vector<string> path = bruteforce(destinations, airports);
-    cout << "Result: ";
-    for (vector<string>::const_iterator i = path.begin(); i != path.end(); ++i) {
-        cout << *i << ' ';
-    }
-    
-    cout << endl;
-    cout << " Airports: ";
-    for (auto i = destinations.begin(); i != destinations.end(); ++i) {
-        cout << *i << " ";
-    }
-    cout << endl;
+    bruteforce(destinations, airports, flights);
 
     /* Testing for nearest neighbours */
     // cout << "Building Graph" << endl;
