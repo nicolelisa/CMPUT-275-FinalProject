@@ -166,7 +166,7 @@ int main() {
     unordered_map<string,ll> flights;
     readFlights(flights, flight_data, airports);
 
-    buildGraph(flights, airports);
+    WDigraph pathGraph = buildGraph(flights, airports);
     
     /* Read in user list of airports and create a vector from the airports */
     vector<string> destinations;
