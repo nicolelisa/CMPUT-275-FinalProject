@@ -213,8 +213,14 @@ int main() {
     /* Testing for nearest neighbours */
     // cout << "Building Graph" << endl;
     // WDigraph graph = createGraph(destinations, flights, airports);
-    // cout << graph.size() << endl;
-
-
+    // pair<long long, vector<string>> output = nearestNeighbour(graph, destinations, airports);
+    // if (output.second.size() < destinations.size()) {
+    //     cout << "Distance: " << output.first << endl;
+    //     cout << "Path: ";
+    //     for (int i = 0; i < output.second.size();++i) {
+    //         cout << output.second.at(i) << " ";
+    //     }
+    //     cout << endl;
+    // }
 }
 
