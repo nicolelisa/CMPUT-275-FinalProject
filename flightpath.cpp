@@ -16,13 +16,8 @@
 using namespace std;
 
 #define ll long long
-// vector<string> bruteforce(vector<string>& dest) {
-//     vector<string> test;
-//     test.push_back("HELLO");
-//     return test;
-// }
 
-void readAirports(unordered_map<string, airport>& airports, string filename) {
+void readAirports(unordered_map<string, airport>& airports, unordered_map<int, string>& idsToAirports, string filename) {
     ifstream file;
     string name,start, line, str_read;
     int str_start, str_end;
@@ -73,6 +68,8 @@ void readAirports(unordered_map<string, airport>& airports, string filename) {
 
         // insert airport into hash table
         airports.insert({name, currentAirport});
+        idsToAirports.insert({id, name});
+
     }
     file.close();
 }
@@ -130,8 +127,10 @@ int main() {
     string a;
 
     /* Read in Airports to hash table from CSV file */
+    string airport_data = "data/airportData.csv";
     unordered_map<string, airport> airports;
-    readAirports(airports, "data/airportData.csv");
+    unordered_map<int, string> idsToAirports;
+    readAirports(airports, idsToAirports, airport_data);
 
     /* Read in Flights to hash table from CSV file */
     string flight_data = "data/flightData.csv";
@@ -163,24 +162,11 @@ int main() {
             ++it;
         }
     }
-    cout << "There are " << n << " airports: ";
+    cout << "There are " << n << " airports remaining: ";
     for (auto i = destinations.begin(); i != destinations.end(); ++i) {
         cout << *i << " ";
     }
     cout << endl;
-
-    // string start,end;
-    // cout << "Enter a starting airport for the flight: ";
-    // cin >> start;
-    // cout << "Enter an end airport for the flight: ";
-    // cin >> end;
-    // a = start + end;
-    // auto got = flights.find(a);
-    // if (got == flights.end())
-    //   cout << "Not Found";
-    // else
-    //   cout << "Distance between desintations " << got->first << " is: " << got->second;
-    // cout << endl;
 
     /* Testing for brute force */
     bruteforce(destinations, airports, flights);
