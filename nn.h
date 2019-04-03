@@ -215,7 +215,9 @@ WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, lon
 // to that airport
 // If no path, distance = -1
 void modifiedNearestNeighbour(WDigraph& graph, vector<string> destinations, unordered_map<string, ll>& distances) {
-    distanceTravelled = 0;
+    ll distanceTravelled = 0;
+    // startVertex= first vertex's ID
+
 
 } 
 
