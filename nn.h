@@ -41,7 +41,7 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
     int closestCity, curCity;
     string curCityName, nextCityName;
     ll curDistance;
-    ll highestDist = 0;
+    // ll highestDist = 0;
     unordered_map<int, pair<int, ll>> searchTree;
     set<int> citiesSoFar;
     int startVertex = airportInfo[destinations.at(0)].id;
@@ -88,19 +88,18 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
         // Insert the city into the set of ones you've travelled to
         citiesReached.insert(closestCity);
         dijkstra(fullGraph, curCity, searchTree);
-        distanceTravelled += searchTree.find(closestCity)->second.second;
-        if (highestDist < searchTree.find(closestCity)->second.second){
-            highestDist = searchTree.find(closestCity)->second.second;
-        }
 
-        //cout << searchTree.find(closestCity)->second.second << endl;
-        
+        // if (highestDist < searchTree.find(closestCity)->second.second){
+        //     highestDist = searchTree.find(closestCity)->second.second;
+        // }
+
         curDistance = -1;
         lowestDistance = -1;
         // Go through Dijkstra path and create a list of nodes that need to be travelled to
         if (searchTree.find(closestCity) == searchTree.end()) {
-            cout << "No Path Found" << endl;
-            cout << "Distance: -1" << endl;
+            // cout << "No Path Found" << endl;
+            distanceTravelled = -1;
+            // cout << "Distance: -1" << endl;
             break;
         } else {
             while (closestCity != curCity) {
@@ -109,37 +108,44 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
                 closestCity = searchTree[closestCity].first;
             }
         }
+        distanceTravelled += searchTree.find(closestCity)->second.second;
+
+        auto search_start = IDsToName.find(path.front());
+        string start_name = search_start->second;        
+        auto search_end = IDsToName.find(path.back());
+        string end_name = search_end->second;
+        string path_name = start_name + end_name;
+        auto search_path = distances.find(path_name);
+        ll return_distance = search_path->second;
+        distanceTravelled += return_distance;
         searchTree.clear();
     }
-    
-    // --------------------------------------------------------------------
-    // THIS IS DIJKSTRA DOESN'T ADD ANYTHING!
-    // For some reason the curCity is always the same as the start city!
-    // It is never goign to be a round trip. I couldn't find a way for it to work!
-    //
-    dijkstra(fullGraph, curCity, searchTree);
-    distanceTravelled += searchTree.find(startVertex)->second.second;
-    distanceTravelled += 1.5* highestDist;
+        // calculate round trip
 
-    cout << searchTree.find(startVertex)->second.second << endl;
 
+    // cout << "SEARCH TREE DIST: " << searchTree.find(startVertex)->second.second << endl;
+    // cout << "CLOSEST CITY: " << closestCity << endl;
+    // cout << "CITY: " << curCity << endl;
     //cout << "Current: " << path.back() << " " << "To: " << startVertex << endl;
     
-    cout << endl << endl << "=========== NEAREST NEIGHBOUR FLIGHTPATH COMPLETE ===========" << endl;
+    cout << "=========== NEAREST NEIGHBOUR FLIGHTPATH COMPLETE ===========" << endl;
 
     curDistance = -1;
     lowestDistance = -1;
 
-    if (searchTree.find(startVertex) == searchTree.end()) {
-        cout << "No Path Found" << endl;
-        cout << "Distance: -1" << endl;
+    // if (searchTree.find(startVertex) == searchTree.end()) {
+    //     cout << "No Path Found" << endl;
+    //     cout << "Distance: -1" << endl;
+    // } else {
+    //     while (startVertex != curCity) {
+    //         citiesSoFar.insert(curCity);
+    //         path.push_front(curCity);
+    //         curCity = searchTree[curCity].first;
+    //     }
+    // }
+    if (distanceTravelled == -1) {
+        cout << "No path found" << endl;
     } else {
-        while (startVertex != curCity) {
-            citiesSoFar.insert(curCity);
-            path.push_front(curCity);
-            curCity = searchTree[curCity].first;
-        }
-    }
     path.push_front(startVertex);
 
     for (list<int>::reverse_iterator rit = path.rbegin(); rit != path.rend(); ++rit) {
@@ -153,6 +159,7 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
 
     cout << endl << "Distance: " << distanceTravelled << "km" << endl;
 } 
+}
 
 
 #endif

@@ -19,12 +19,12 @@ void findPermutations(vector<string>& dest, vector<vector<string>>& perms, int l
         current.push_back(home);
         current.insert(current.begin(), home);
         perms.push_back(current);
-        int j = 0;
-        for (auto i = current.begin(); i != current.end(); ++i) {
-            cout << j << ":" << *i << " ";
-            ++j;
-        }
-        cout << endl;
+        // int j = 0;
+        // for (auto i = current.begin(); i != current.end(); ++i) {
+        //     // cout << j << ":" << *i << " ";
+        //     ++j;
+        // }
+        // cout << endl;
     }
     else {
         for (int i=l; i<=r; ++i) {
@@ -74,7 +74,7 @@ void findPath(vector<string>& currentPerm, int& position, ll& currentDist, int s
 
 }
 
-void bruteforce(vector<string>& dest, const unordered_map<string, airport>& airports, const unordered_map<string, ll>& flights, 
+void bruteforce(vector<string> dest, const unordered_map<string, airport>& airports, const unordered_map<string, ll>& flights, 
 				const WDigraph pathGraph, const unordered_map<int, string>& idsToAirports) {
 
     vector<string> min_path = dest;

@@ -124,6 +124,63 @@ void readFlights(unordered_map<string, ll>& flights, string filename, unordered_
     file.close();
 }
 
+// void readData(unordered_map<int, vector<float>>& runStats, string filename) {
+//     ifstream file;
+//     string path, line, str_read;
+//     int str_start, str_end;
+//     vector<float> stats;
+  
+//     file.open(filename);
+
+//     if (file.fail()) {
+//         cerr << "Error encountered. File was not read." << endl;
+//         exit(0);
+//     }
+//     //throws away the first line which is just labels
+//     getline(file, line);
+
+//     while (getline(file, line)) {
+//         // read the id of the airport
+//         str_start = 0;
+//         str_end = line.find(",", str_start+1);
+//         str_read = line.substr(str_start, str_end-str_start);
+//         int cities = stoi(str_read);
+//         cout << cities << endl;
+
+//         // getting bf runs
+//         str_start = str_end;
+//         str_end = line.find(",", str_start+1);
+//         str_read = line.substr(str_start, str_end-str_start);
+//         float bf_runs = stof(str_read);
+//         cout << bf_runs << endl;
+//         stats.push_back(bf_runs);
+                
+//         // // getting bf time
+//         // str_start = line.find(",", str_end+1);
+//         // str_end = line.find(",", str_start+1);
+//         // str_read = line.substr(str_start, str_end-str_start);
+//         // float bf_time = stof(str_read);
+//         // stats.push_back(bf_time);
+        
+//         // // getting nn runs
+//         // str_start = line.find(",", str_end+1);
+//         // str_end = line.find(",", str_start+1);
+//         // str_read = line.substr(str_start, str_end-str_start);
+//         // float nn_runs = stof(str_read);
+//         // cout << nn_runs << endl;
+//         // stats.push_back(nn_runs);
+                
+//         // // getting nn time
+//         // str_start = line.find(",", str_end+1);
+//         // str_end = line.find(",", str_start+1);
+//         // str_read = line.substr(str_start, str_end-str_start);
+//         // float nn_time = stof(str_read);
+//         // cout << nn_time << endl;
+//         // stats.push_back(nn_time);
+//     }
+//     file.close();
+// }
+
 WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<string, airport>& airportInfo) {
     WDigraph airportGraph;
     string path, start_name, end_name;
@@ -155,8 +212,12 @@ WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<str
 
 int main() {
 
-    unordered_map<int, pair<int, float>> bruteStats;
-    unordered_map<int, pair<int, float>> neighbourStats;
+    // unordered_map<int, pair<int, float>> bruteStats;
+    // unordered_map<int, pair<int, float>> neighbourStats;
+    // unordered_map<int, vector<float>> runStats;
+    
+    // string timer_data = "data/timerData.csv";
+    // readData(runStats, timer_data);
 
     clock_t startTime;
     float timeTaken;
@@ -195,6 +256,7 @@ int main() {
         cout << endl;
 
         /* Check whether airports exist */
+        cout << "Checking airport validity..." << endl;
         auto it = destinations.begin();
         while (it != destinations.end()){
             auto exists = airports.find(*it);
@@ -210,58 +272,40 @@ int main() {
             cout << *i << " ";
         }
         cout << endl << endl;
-        while (true) {   
-            int c;     
+        cin.clear();
+        char c;
+        while (true) {     
             cout << "Select an Option: " << endl;
             cout << "  (1) Find Path Using Brute Force (Perfect Accuracy, Low Efficiency)" << endl;
             cout << "  (2) Find Path Using Nearest Neighbour (Moderate Accuracy, High Efficiency)" << endl;
             cout << "  (3) Enter New Destinations" << endl;
             cout << "  (4) Exit" << endl << endl;
             cin >> c;
-            if (c == 1) {
+            if (c == '1') {
                 startTime = clock();
                 bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
                 timeTaken = (clock() - startTime)/CLOCKS_PER_SEC;
 
                 cout << "Run time was: " << (float)(clock() - startTime)/CLOCKS_PER_SEC << "s" << endl;
                 cout << endl;
-                if (bruteStats.find(destinations.size()) == bruteStats.end()) {
-                    bruteStats[destinations.size()] = make_pair(timeTaken, 1);
-                } else {
-                    bruteStats[destinations.size()].first += timeTaken;
-                    bruteStats[destinations.size()].second++;
-                }
-            } else if (c == 2) {
+
+            } else if (c == '2') {
                 startTime = clock();
                 modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
                 timeTaken = (clock() - startTime)/CLOCKS_PER_SEC;
                 cout << "Run time was: " << (float)(clock() - startTime)/CLOCKS_PER_SEC << "s" << endl;
-                if (neighbourStats.find(destinations.size()) == neighbourStats.end()) {
-                    neighbourStats[destinations.size()] = make_pair(timeTaken, 1);
-                } else {
-                    neighbourStats[destinations.size()].first += timeTaken;
-                    neighbourStats[destinations.size()].second++;
-                }
-            } else if (c == 3) {
+            } else if (c == '3') {
                 break;
-            } else if (c == 4) {
+            } else if (c == '4') {
                 cout << "Exiting Program" << endl;
                 return 0;
             } else {
                 cout << "Invalid input" << endl;
+                cin.clear();
             }
             cout << endl;
         }  
     }
-
-
-
-    /* Testing for brute force */
-    // bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
-
-    /* Testing for nearest neighbours */
-    //modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
-    
     return 0;
 }
 
