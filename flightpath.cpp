@@ -282,12 +282,22 @@ int main() {
             cout << "  (4) Exit" << endl << endl;
             cin >> c;
             if (c == '1') {
-                startTime = clock();
-                bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
-                timeTaken = (clock() - startTime)/CLOCKS_PER_SEC;
 
-                cout << "Run time was: " << (float)(clock() - startTime)/CLOCKS_PER_SEC << "s" << endl;
-                cout << endl;
+                if (n > 5) {
+                    char p;
+                    cout << "Are you sure? This calculation may take a long time." << endl << "(1) Yes" << endl << "(2) No" << endl;
+                    cin >> p;
+                    if (p == '1') {
+                        cin.clear();
+                        startTime = clock();
+                        bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
+                        timeTaken = (clock() - startTime)/CLOCKS_PER_SEC;
+
+                        cout << "Run time was: " << (float)(clock() - startTime)/CLOCKS_PER_SEC << "s" << endl;
+                        cout << endl;
+
+                    }
+                }
 
             } else if (c == '2') {
                 startTime = clock();

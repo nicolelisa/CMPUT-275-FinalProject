@@ -88,7 +88,7 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
         // Insert the city into the set of ones you've travelled to
         citiesReached.insert(closestCity);
         dijkstra(fullGraph, curCity, searchTree);
-
+        distanceTravelled += searchTree.find(closestCity)->second.second;
         // if (highestDist < searchTree.find(closestCity)->second.second){
         //     highestDist = searchTree.find(closestCity)->second.second;
         // }
