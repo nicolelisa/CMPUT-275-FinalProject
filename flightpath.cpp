@@ -200,9 +200,10 @@ int main() {
     cout << endl;
 
     /* Testing for brute force */
-    bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
+    //bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
 
     /* Testing for nearest neighbours */
+    //modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
     
 
 }
