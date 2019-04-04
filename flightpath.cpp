@@ -9,6 +9,7 @@
 #include <list>
 #include <utility>
 #include <stdlib.h>
+#include <time.h>
 #include "wdigraph.h"
 #include "airport.h"
 #include "nn.h"
@@ -153,7 +154,12 @@ WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<str
 }
 
 int main() {
-    
+
+    unordered_map<int, pair<int, float>> bruteStats;
+    unordered_map<int, pair<int, float>> neighbourStats;
+
+    clock_t startTime;
+    float timeTaken;
     /* Read in Airports to hash table from CSV file */
     string airport_data = "data/airportData.csv";
     unordered_map<string, airport> airports;
@@ -213,12 +219,29 @@ int main() {
             cout << "  (4) Exit" << endl << endl;
             cin >> c;
             if (c == 1) {
+                startTime = clock();
                 bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
-                cout << "Run time was: " << endl;
+                timeTaken = (clock() - startTime)/CLOCKS_PER_SEC;
+
+                cout << "Run time was: " << (float)(clock() - startTime)/CLOCKS_PER_SEC << "s" << endl;
                 cout << endl;
+                if (bruteStats.find(destinations.size()) == bruteStats.end()) {
+                    bruteStats[destinations.size()] = make_pair(timeTaken, 1);
+                } else {
+                    bruteStats[destinations.size()].first += timeTaken;
+                    bruteStats[destinations.size()].second++;
+                }
             } else if (c == 2) {
-                 //modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
-                cout << "Run time was: " << endl;
+                startTime = clock();
+                modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
+                timeTaken = (clock() - startTime)/CLOCKS_PER_SEC;
+                cout << "Run time was: " << (float)(clock() - startTime)/CLOCKS_PER_SEC << "s" << endl;
+                if (neighbourStats.find(destinations.size()) == neighbourStats.end()) {
+                    neighbourStats[destinations.size()] = make_pair(timeTaken, 1);
+                } else {
+                    neighbourStats[destinations.size()].first += timeTaken;
+                    neighbourStats[destinations.size()].second++;
+                }
             } else if (c == 3) {
                 break;
             } else if (c == 4) {

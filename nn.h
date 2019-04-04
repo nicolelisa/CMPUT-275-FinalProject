@@ -22,295 +22,137 @@
 
 using namespace std;
 
-// void readInData(WDigraph& flights, string filename) {
-//     //string file = "CanadaAirportFlights.csv";
-//     ifstream file;
-//     string start, end, line;
-//     int found1, found2, iStart, iEnd;
-  
-//     file.open(filename);
+// Finds distances from the coordinares (radial distances)
+ll findDistance(string city1, string city2, unordered_map<string, airport> airportInfo) {
+    double startLon = airportInfo.find(city1)->second.lon;
+    double startLat = airportInfo.find(city1)->second.lat;
+    double endLon = airportInfo.find(city2)->second.lon;
+    double endLat = airportInfo.find(city2)->second.lat;
+    Coordinate startCoord(startLat, startLon);
+    Coordinate endCoord(endLat, endLon);
+    ll curDistance = HaversineDistance(startCoord, endCoord);
+    return curDistance;
+}
 
-//     if (file.fail()) {
-//         cerr << "Error encountered. File was not read." << endl;
-//         exit(0);
-//     }
-
-//     //throws away the first line which is just labels
-//     getline(file, start);
-
-//     int counter = 1;
-
-//     while (getline(file, line)) {
-//         found1 = 0;
-
-//         for (int i = 0; i < 3; i++) {
-//             found1 = line.find(",", found1+1);
-//         }
-       
-//         found2 = line.find(",", found1+1);
-//         start = line.substr(found1+1, found2-found1-1);
-      
-//         found1 = line.find(",", found2+1);
-//         found2 = line.find(",", found1+1);
-//         end = line.substr(found1+1, found2-found1-1);
-
-//         cout << counter << ": ";
-//         cout << "Airport 1: " << start << " ";
-//         cout << "Airport 2: " << end << endl;
-
-//         if (start.substr(1,1) != "N" && end.substr(1,1) != "N") {
-//             iStart = stoi(start);
-//             // flights.addVertex(iStart);
-//         }
-        
-//         if (end.substr(1,1) != "N") {
-//             iEnd = stoi(end);
-//             // flights.addVertex(iEnd);
-//         }
-
-//         // Still need to get their long and lat then add the weighted edge to the graphs!!!!
-
-//         counter++;
-//     }
-//     file.close();
-// }
-
-
-// vector<pair<string, int>> nameToNumber(vector<string> requestedAirports, unordered_map<string, airport>& airportInfo) {
-//     vector<pair<string, int>> bothIDs;
-//     for (int i = 0; i < (int)requestedAirports.size(); i++) {
-//         int numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
-//         bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
-//     }
-//     return bothIDs;
-// }
-
-// unordered_map<int, string> numberToName(vector<string> requestedAirports, unordered_map<string, airport>& airportInfo) {
-//     unordered_map<int, string> bothIDs;
-//     for (int i = 0; i < (int)requestedAirports.size(); i++) {
-//         int numericalID = airportInfo.find(requestedAirports.at(i))->second.id;
-//         //bothIDs.push_back(make_pair(requestedAirports.at(i), numericalID));
-//         bothIDs[numericalID] = requestedAirports.at(i);
-//     }
-//     return bothIDs;
-// }
-
-
-// // nameOfAirports = destination on main file
-// // distances = flights
-// WDigraph createGraph(vector<string> requestedAirports, unordered_map<string, long long>& distances, 
-//                       unordered_map<string, airport>& airportInfo) {
-//     WDigraph airportGraph;
-//     string jointNames;
-//     long long dist;
-
-//     // vector with pairs of the airport names and ids
-//     vector<pair<string, int>> bothIDs = nameToNumber(requestedAirports, airportInfo);
-
-//     for (int i = 0; i < (int)bothIDs.size(); i++) {
-//         for (int j = 0; j < (int)bothIDs.size(); j++) {
-//             if (i !=j) {
-//                 jointNames = bothIDs.at(i).first + bothIDs.at(j).first;
-//                 //cout << jointNames << endl;
-//                 if (distances.find(jointNames) != distances.end()) {    
-//                     dist = distances.find(jointNames)->second;
-//                 } else {
-//                     dist = -1;
-//                 }
-
-//                 //dist = 
-//                 // convert i and j back to strings concatenate them back together
-//                 // long long dist = look up distance in unordered map via concatenated string (hashtable!)
-//                 // if the string does not exist within the unordered map make the distance NULL
-//                 airportGraph.addEdge(bothIDs.at(i).second, bothIDs.at(j).second, dist);
-//             }
-//         }
-//     }
-
-//     return airportGraph;
-
-// }
-
-
-// Needs a weighted graph of the airports of interest
-//lso needs the numerical ID of the airport that we are starting at.
-// void nearestNeighbour(WDigraph& airportGraph, vector<string> requestedAirports, 
-//                                                  unordered_map<string, airport>& airportInfo) {
-//     ll distanceTravelled = 0;
-//     ll shortestPathSoFar = -1;
-//     int stopNumber = 0;
-//     long long cost = -1;
-//     int nearestAirport;
-//     bool hasPath = true;
-
-//     unordered_map<int, string> numsToNames = numberToName(requestedAirports, airportInfo);
-//     int airportStart = airportInfo.find(requestedAirports.at(0))->second.id;
-
-//     //unordered_set<int>::const_iterator Digraph::neighbours(int v)
-//     //int neighbours;
-//     int curNode = airportStart;
-
-//     // key is airportID and value is the number of edges leading to it yet.
-//     map<int, int> airportsTravelled;
-//     // Set beginning node to exist in the map but not have any edges to it yet.
-//     airportsTravelled[airportStart] = 0;
-//     stopNumber++;
-//     while ((int)airportsTravelled.size() < airportGraph.size()) {
-//         for (auto iter = airportGraph.neighbours(curNode); iter != airportGraph.endIterator(curNode); iter++) {
-//             if (airportGraph.isEdge(curNode, *iter) && (airportsTravelled.find(*iter) == airportsTravelled.end())) {
-//                 cost = airportGraph.getCost(curNode, *iter);
-//                 if (cost != -1) {
-//                     if (shortestPathSoFar == -1) {
-//                         shortestPathSoFar = cost;
-//                         nearestAirport = *iter;
-//                     } else if (shortestPathSoFar > cost) {
-//                         shortestPathSoFar = cost;  
-//                         nearestAirport = *iter;
-//                     }
-//                 }
-//             }
-//         }
-//         if (shortestPathSoFar != -1) {
-//             distanceTravelled += shortestPathSoFar;
-//             shortestPathSoFar = -1;
-//             curNode = nearestAirport;
-//             airportsTravelled[nearestAirport] = stopNumber;
-//             stopNumber++;
-//         } else {
-//             hasPath = false;
-//             break;            
-//         }
-//     }
-
-//     string lastAirport;
-//     string nextAirport;
-//     if (airportGraph.isEdge(curNode, airportStart) && airportGraph.getCost(curNode, airportStart) != -1 && hasPath) {
-//         for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
-//             //cout << it->first << " " << it->second << endl;
-//             cout << numsToNames[it->first] << " ";
-//         }
-//         distanceTravelled += airportGraph.getCost(curNode, airportStart);
-
-//         lastAirport = numsToNames[airportStart];
-//         cout << lastAirport << endl;
-
-//         cout << "Distance: " << distanceTravelled << endl;
-
-//     } else {
-//         cout << "Path: ";
-//         for (map<int,int>::iterator it = airportsTravelled.begin(); it != airportsTravelled.end(); ++it) {
-//             //cout << it->first << " " << it->second << endl;
-//             nextAirport = numsToNames[it->first];
-//             cout << nextAirport << " ";
-//         }
-//         cout << endl << "No path to complete rest of trip" << endl;
-
-//     }     
-// }
-
-
-// Modified nn 
-// calculate distances between airports
-// find the shortest distrance between cur Airport and possible next airports.
-// if there is not a direct flight to the next airport, use dijkstra to find the shortest path
-// to that airport
-// If no path, distance = -1
 void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, unordered_map<string, ll>& distances,
                               unordered_map<int, string> IDsToName, unordered_map<string, airport> airportInfo) {
     ll distanceTravelled = 0;
     ll lowestDistance = -1;
-    int closestCity;
-    string curCityName, cityName;
+    int closestCity, curCity;
+    string curCityName, nextCityName;
     ll curDistance;
+    ll highestDist = 0;
     unordered_map<int, pair<int, ll>> searchTree;
     set<int> citiesSoFar;
     int startVertex = airportInfo[destinations.at(0)].id;
-    citiesSoFar.insert(startVertex);
 
-    cout << endl << "Beginning algorithm" << endl;
 
+
+    set<int> citiesReached;
+    citiesReached.insert(startVertex);
+
+    list<int> path;
+    path.push_front(startVertex);
+
+    curCityName = destinations.at(0);
+    curCity = airportInfo[curCityName].id;
     for (int i = 0; i < (int)destinations.size(); i++) {
         //find the shortest distance from curNode to the next closest location
-        curCityName = destinations.at(i);
-        lowestDistance = -1;
+        if (i > 0) { 
+            curCityName = IDsToName[closestCity];
+            curCity = closestCity;
+        }
+
         for (int j = 0; j < (int)destinations.size(); j++) {
-            if ((i != j) && (citiesSoFar.find(airportInfo[destinations.at(j)].id) == citiesSoFar.end())) {
-                cityName = destinations.at(j);
-                double startLon = airportInfo.find(curCityName)->second.lon;
-                double startLat = airportInfo.find(curCityName)->second.lat;
-                double endLon = airportInfo.find(cityName)->second.lon;
-                double endLat = airportInfo.find(cityName)->second.lat;
-                Coordinate startCoord(startLat, startLon);
-                Coordinate endCoord(endLat, endLon);
-                curDistance = HaversineDistance(startCoord, endCoord);
-                if (lowestDistance != -1 && lowestDistance > curDistance) {
+            if (i != j) {
+                // find the distance of the closest city
+                nextCityName = destinations.at(j);
+                curDistance = findDistance(curCityName, nextCityName, airportInfo);
+
+                // Check if the lowest distance is actually lower.
+                if (lowestDistance != -1 && lowestDistance >= curDistance && curDistance != 0 && 
+                    citiesReached.count(airportInfo.find(nextCityName)->second.id) == 0) {
                     lowestDistance = curDistance;
-                    cityName = destinations.at(j);
-                    closestCity = airportInfo[cityName].id;
-                } else if (lowestDistance == -1) {
+                    closestCity = airportInfo[nextCityName].id;
+
+                // If there is no lowest entry is add current distance as the lowest
+                } else if (lowestDistance == -1 && curDistance != 0 && 
+                           citiesReached.count(airportInfo.find(nextCityName)->second.id) == 0) {
                     lowestDistance = curDistance;
-                    cityName = destinations.at(j);
-                    closestCity = airportInfo[cityName].id;
-                }
-                //cout << "Loop: " << i + i*j << endl;
+                    curCityName = destinations.at(j);
+                    closestCity = airportInfo[nextCityName].id;
+                } 
             }
         }
         
-        dijkstra(fullGraph, startVertex, searchTree);
+        // Insert the city into the set of ones you've travelled to
+        citiesReached.insert(closestCity);
+        dijkstra(fullGraph, curCity, searchTree);
+        distanceTravelled += searchTree.find(closestCity)->second.second;
+        if (highestDist < searchTree.find(closestCity)->second.second){
+            highestDist = searchTree.find(closestCity)->second.second;
+        }
+
+        //cout << searchTree.find(closestCity)->second.second << endl;
+        
         curDistance = -1;
         lowestDistance = -1;
+        // Go through Dijkstra path and create a list of nodes that need to be travelled to
         if (searchTree.find(closestCity) == searchTree.end()) {
             cout << "No Path Found" << endl;
             cout << "Distance: -1" << endl;
             break;
         } else {
-            distanceTravelled += searchTree.find(closestCity)->second.second;
-            list<int> path;
-            cout << "Distance: " << distanceTravelled << endl;
-            //cout << "Entering Loop" << endl;
-            while (closestCity != startVertex) {
+            while (closestCity != curCity) {
                 citiesSoFar.insert(closestCity);
                 path.push_front(closestCity);
-                closestCity = searchTree.find(closestCity)->second.first;
-            }
-            //path.push_front(startVertex);
-            
-            for (auto v:path) {
-                curCityName = IDsToName[v];
-                if (find(destinations.begin(), destinations.end(), IDsToName[v]) != destinations.end()) {
-                    cout << curCityName << " ";
-                } else {
-                    cout << "*" << curCityName << " ";
-                }
+                closestCity = searchTree[closestCity].first;
             }
         }
+        searchTree.clear();
     }
-    cout << "Distance: " << distanceTravelled << endl;
+    
+    // --------------------------------------------------------------------
+    // THIS IS DIJKSTRA DOESN'T ADD ANYTHING!
+    // For some reason the curCity is always the same as the start city!
+    // It is never goign to be a round trip. I couldn't find a way for it to work!
+    //
+    dijkstra(fullGraph, curCity, searchTree);
+    distanceTravelled += searchTree.find(startVertex)->second.second;
+    distanceTravelled += 1.5* highestDist;
+
+    cout << searchTree.find(startVertex)->second.second << endl;
+
+    //cout << "Current: " << path.back() << " " << "To: " << startVertex << endl;
+    
+    cout << endl << endl << "=========== NEAREST NEIGHBOUR FLIGHTPATH COMPLETE ===========" << endl;
+
+    curDistance = -1;
+    lowestDistance = -1;
+
+    if (searchTree.find(startVertex) == searchTree.end()) {
+        cout << "No Path Found" << endl;
+        cout << "Distance: -1" << endl;
+    } else {
+        while (startVertex != curCity) {
+            citiesSoFar.insert(curCity);
+            path.push_front(curCity);
+            curCity = searchTree[curCity].first;
+        }
+    }
+    path.push_front(startVertex);
+
+    for (list<int>::reverse_iterator rit = path.rbegin(); rit != path.rend(); ++rit) {
+        curCityName = IDsToName[*rit];
+        if (find(destinations.begin(), destinations.end(), IDsToName[*rit]) != destinations.end()) {
+            cout << curCityName << " ";
+        } else {
+            cout << "*" << curCityName << " ";
+        }
+    }
+
+    cout << endl << "Distance: " << distanceTravelled << "km" << endl;
 } 
-
-
- // dijkstra(graph, start, tree);
-
- //  if (tree.find(end) == tree.end()) {
- //      // no path
- //      cout << "N 0" << endl;
- //  }
- //  else {
- //    // read off the path by stepping back through the search tree
- //    list<int> path;
- //    while (end != start) {
- //      path.push_front(end);
- //      end = tree[end].second;
- //    }
- //    path.push_front(start);
-
- //    // output the path
- //    cout << "N " << path.size() << endl;
- //    for (auto v : path) {
- //      cout << "W " << points[v].lat << ' ' << points[v].lon << endl;
- //    }
- //    cout << "E" << endl;
- //  }
 
 
 #endif
