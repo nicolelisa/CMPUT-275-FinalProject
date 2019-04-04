@@ -153,8 +153,7 @@ WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<str
 }
 
 int main() {
-    system("clear");
-    cout << "============= WELCOME TO FLIGHTPATH ============= " << endl << endl;
+    
     /* Read in Airports to hash table from CSV file */
     string airport_data = "data/airportData.csv";
     unordered_map<string, airport> airports;
@@ -168,7 +167,9 @@ int main() {
 
     /* Create weighted graph of all flight paths */
     WDigraph pathGraph = buildGraph(flights, airports);
-    // while (true) {
+    while (true) {
+        system("clear");
+        cout << "============= WELCOME TO FLIGHTPATH ============= " << endl << endl;
         /* Read in user list of airports and create a vector from the airports */
         vector<string> destinations;
         int n;
@@ -228,7 +229,7 @@ int main() {
             }
             cout << endl;
         }  
-    // }
+    }
 
 
 
