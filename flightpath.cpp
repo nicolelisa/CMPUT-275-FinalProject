@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <utility>
+#include <stdlib.h>
 #include "wdigraph.h"
 #include "airport.h"
 #include "nn.h"
@@ -142,7 +143,7 @@ WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<str
         if (search_end != airportInfo.end()) {
             end_id = search_end->second.id;
         }
-        cout << start_name << " " << start_id << " " << end_name << " " << end_id << " " << i->second << endl;
+        // cout << start_name << " " << start_id << " " << end_name << " " << end_id << " " << i->second << endl;
         if (start_id >= 0 && end_id >= 0) {
             airportGraph.addEdge(start_id, end_id, dist);
         }
@@ -152,9 +153,8 @@ WDigraph buildGraph(unordered_map<string, long long>& flights, unordered_map<str
 }
 
 int main() {
-    
-    string a;
-
+    system("clear");
+    cout << "============= WELCOME TO FLIGHTPATH ============= " << endl << endl;
     /* Read in Airports to hash table from CSV file */
     string airport_data = "data/airportData.csv";
     unordered_map<string, airport> airports;
@@ -166,45 +166,78 @@ int main() {
     unordered_map<string,ll> flights;
     readFlights(flights, flight_data, airports);
 
+    /* Create weighted graph of all flight paths */
     WDigraph pathGraph = buildGraph(flights, airports);
-    
-    /* Read in user list of airports and create a vector from the airports */
-    vector<string> destinations;
-    int n;
-    cout << "How many destinations would you like to visit? ";
-    cin >> n;
-    cout << "Enter a list of airports: ";
-    for (int i = 0; i<n; ++i) {
+    // while (true) {
+        /* Read in user list of airports and create a vector from the airports */
+        vector<string> destinations;
+        int n;
+        string a;
+        cout << "Enter your starting airport: ";
         cin >> a;
         destinations.push_back(a);
-    }
-    cout << endl;
 
-    /* Read in Flights to a Hash table */
-    auto it = destinations.begin();
-    while (it != destinations.end()){
-        auto exists = airports.find(*it);
-        if (exists == airports.end()) {
-            cout << *it << ": Airport not found and was removed from list" << endl;
-            it = destinations.erase(it);
-            --n;
-        } else {
-            cout << *it << ": Airport exists and is okay" << endl; 
-            ++it;
+        cout << "How many destinations would you like to visit? ";
+        cin >> n;
+        
+        cout << "Enter a list of space-seperated airports to visit: ";
+        for (int i = 0; i<n; ++i) {
+            cin >> a;
+            destinations.push_back(a);
         }
-    }
-    cout << "There are " << n << " airports remaining: ";
-    for (auto i = destinations.begin(); i != destinations.end(); ++i) {
-        cout << *i << " ";
-    }
-    cout << endl;
+        cout << endl;
+
+        /* Check whether airports exist */
+        auto it = destinations.begin();
+        while (it != destinations.end()){
+            auto exists = airports.find(*it);
+            if (exists == airports.end()) {
+                cout << *it << ": Airport not found and was removed from list" << endl;
+                it = destinations.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        cout << "There are " << destinations.size() << " airports remaining: ";
+        for (auto i = destinations.begin(); i != destinations.end(); ++i) {
+            cout << *i << " ";
+        }
+        cout << endl << endl;
+        while (true) {   
+            int c;     
+            cout << "Select an Option: " << endl;
+            cout << "  (1) Find Path Using Brute Force (Perfect Accuracy, Low Efficiency)" << endl;
+            cout << "  (2) Find Path Using Nearest Neighbour (Moderate Accuracy, High Efficiency)" << endl;
+            cout << "  (3) Enter New Destinations" << endl;
+            cout << "  (4) Exit" << endl << endl;
+            cin >> c;
+            if (c == 1) {
+                bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
+                cout << "Run time was: " << endl;
+                cout << endl;
+            } else if (c == 2) {
+                 //modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
+                cout << "Run time was: " << endl;
+            } else if (c == 3) {
+                break;
+            } else if (c == 4) {
+                cout << "Exiting Program" << endl;
+                return 0;
+            } else {
+                cout << "Invalid input" << endl;
+            }
+            cout << endl;
+        }  
+    // }
+
+
 
     /* Testing for brute force */
-    //bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
+    // bruteforce(destinations, airports, flights, pathGraph, idsToAirports);
 
     /* Testing for nearest neighbours */
     //modifiedNearestNeighbour(pathGraph, destinations, flights, idsToAirports, airports);
     
-
+    return 0;
 }
 
