@@ -2,7 +2,7 @@ CC= g++
 CFLAGS= -c -Wall -O2 -std=c++11 
 LFLAGS=
 PROGS= flightpath
-OBJS= digraph.o  flightpath.o
+OBJS= digraph.o  flightpath.o dijkstra.o
 
 # executable targets
 
@@ -18,6 +18,9 @@ flightpath.o: flightpath.cpp bruteforce.h nn.h digraph.h airport.h wdigraph.h
 
 digraph.o: digraph.cpp digraph.h
 	$(CC) digraph.cpp -o digraph.o $(CFLAGS)
+
+dijkstra.o: dijkstra.cpp dijkstra.h
+	$(CC) dijkstra.cpp -o dijkstra.o $(CFLAGS)
 
 clean:
 	@rm -f $(OBJS) $(PROGS)

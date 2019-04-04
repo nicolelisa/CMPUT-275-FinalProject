@@ -72,57 +72,57 @@ void dijkstra(const WDigraph& graph, int startVertex,
     }
 }
 
-int main() {
-    WDigraph graph;
+// int main() {
+//     WDigraph graph;
 
-    int startVertex, endVertex;
+//     int startVertex, endVertex;
 
-    // reading in the graph
-    int n, m;
-    cin >> n >> m;
-    for (int i = 0; i < n; ++i) {
-        int label;
-        cin >> label;
-        graph.addVertex(label);
-    }
-    for (int i = 0; i < m; ++i) {
-        int u, v;
-        long long c;
-        cin >> u >> v >> c;
-        graph.addEdge(u, v, c);
-    }
-    cin >> startVertex >> endVertex;
+//     // reading in the graph
+//     int n, m;
+//     cin >> n >> m;
+//     for (int i = 0; i < n; ++i) {
+//         int label;
+//         cin >> label;
+//         graph.addVertex(label);
+//     }
+//     for (int i = 0; i < m; ++i) {
+//         int u, v;
+//         long long c;
+//         cin >> u >> v >> c;
+//         graph.addEdge(u, v, c);
+//     }
+//     cin >> startVertex >> endVertex;
 
 
-    // run the search
-    // searchTree[v] will be the pair (u,d) of the node u prior to v
-    // in a shortest path to v and d will be the shortest path distance to v
-    unordered_map<int, PIL> searchTree;
-    dijkstra(graph, startVertex, searchTree);
+//     // run the search
+//     // searchTree[v] will be the pair (u,d) of the node u prior to v
+//     // in a shortest path to v and d will be the shortest path distance to v
+//     unordered_map<int, PIL> searchTree;
+//     dijkstra(graph, startVertex, searchTree);
 
-    // read off a path
-    list<int> path;
-    if (searchTree.find(endVertex) == searchTree.end()) {
-      cout << "Vertex " << endVertex << " not reachable from " << startVertex << endl;
-    }
-    else {
-      int stepping = endVertex;
-      while (stepping != startVertex) {
-        path.push_front(stepping);
+//     // read off a path
+//     list<int> path;
+//     if (searchTree.find(endVertex) == searchTree.end()) {
+//       cout << "Vertex " << endVertex << " not reachable from " << startVertex << endl;
+//     }
+//     else {
+//       int stepping = endVertex;
+//       while (stepping != startVertex) {
+//         path.push_front(stepping);
 
-        // crawl up the search tree one step
-        stepping = searchTree[stepping].first;
-      }
-      path.push_front(startVertex);
+//         // crawl up the search tree one step
+//         stepping = searchTree[stepping].first;
+//       }
+//       path.push_front(startVertex);
 
-      cout << "Cost of cheapest path from " << startVertex << " to "
-           << endVertex << " is: " << searchTree[endVertex].second << endl;
-      cout << "Path:";
-      for (auto it : path) {
-        cout << ' ' << it;
-      }
-      cout << endl;
-    }
+//       cout << "Cost of cheapest path from " << startVertex << " to "
+//            << endVertex << " is: " << searchTree[endVertex].second << endl;
+//       cout << "Path:";
+//       for (auto it : path) {
+//         cout << ' ' << it;
+//       }
+//       cout << endl;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
