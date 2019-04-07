@@ -89,6 +89,8 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
         citiesReached.insert(closestCity);
         dijkstra(fullGraph, curCity, searchTree);
         distanceTravelled += searchTree.find(closestCity)->second.second;
+        
+
         // if (highestDist < searchTree.find(closestCity)->second.second){
         //     highestDist = searchTree.find(closestCity)->second.second;
         // }
@@ -105,22 +107,25 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
             while (closestCity != curCity) {
                 citiesSoFar.insert(closestCity);
                 path.push_front(closestCity);
+                distanceTravelled += searchTree.find(closestCity)->second.second;
                 closestCity = searchTree[closestCity].first;
             }
         }
-        distanceTravelled += searchTree.find(closestCity)->second.second;
-
-        auto search_start = IDsToName.find(path.front());
-        string start_name = search_start->second;        
-        auto search_end = IDsToName.find(path.back());
-        string end_name = search_end->second;
-        string path_name = start_name + end_name;
-        auto search_path = distances.find(path_name);
-        ll return_distance = search_path->second;
-        distanceTravelled += return_distance;
-        searchTree.clear();
     }
         // calculate round trip
+    //distanceTravelled += searchTree.find(closestCity)->second.second;
+    
+    // auto search_start = IDsToName.find(path.front());
+    // string start_name = search_start->second;        
+    // auto search_end = IDsToName.find(path.back());
+    // string end_name = search_end->second;
+    // string path_name = start_name + end_name;
+    // auto search_path = distances.find(path_name);
+    // ll return_distance = search_path->second;
+    // distanceTravelled += return_distance;
+    // searchTree.clear();
+
+
 
 
     // cout << "SEARCH TREE DIST: " << searchTree.find(startVertex)->second.second << endl;
@@ -143,11 +148,16 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
     //         curCity = searchTree[curCity].first;
     //     }
     // }
+
+    // Print the output to the terminal
+    // Case if there is not a route to reach all desired destinations
     if (distanceTravelled == -1) {
         cout << "No path found" << endl;
     } else {
     path.push_front(startVertex);
 
+    // Case if there is a path to all desired airports, prints an "*" before the airport
+    // ID if there is a layover at another airport as the shortest route.
     for (list<int>::reverse_iterator rit = path.rbegin(); rit != path.rend(); ++rit) {
         curCityName = IDsToName[*rit];
         if (find(destinations.begin(), destinations.end(), IDsToName[*rit]) != destinations.end()) {
