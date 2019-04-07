@@ -234,6 +234,7 @@ int main() {
 
     /* Create weighted graph of all flight paths */
     WDigraph pathGraph = buildGraph(flights, airports);
+
     while (true) {
         system("clear");
         cout << "============= WELCOME TO FLIGHTPATH ============= " << endl << endl;
@@ -279,7 +280,8 @@ int main() {
             cout << "  (1) Find Path Using Brute Force (Perfect Accuracy, Low Efficiency)" << endl;
             cout << "  (2) Find Path Using Nearest Neighbour (Moderate Accuracy, High Efficiency)" << endl;
             cout << "  (3) Enter New Destinations" << endl;
-            cout << "  (4) Exit" << endl << endl;
+            cout << "  (4) Exit" << endl;
+            cout << "  (5) Check Paths" << endl << endl;
             cin >> c;
             if (c == '1') {
                     
@@ -300,7 +302,33 @@ int main() {
             } else if (c == '4') {
                 cout << "Exiting Program" << endl;
                 return 0;
-            } else {
+            } else if (c == '5') {
+                ll calc = 0;
+                while (true) {
+                    string a;
+                    cout << "Input a flight (XXXXXX) or END or RESET: ";
+                    cin >> a;
+                    if (a == "END") {
+                        break;
+                    } else if (a == "RESET") {
+                        calc = 0;
+                        cout << "Total trip reset to 0" << endl;
+                    }
+                    else {
+                    auto search = flights.find(a);
+                    if (search != flights.end()) {
+                        calc += search->second;
+                        cout << "     This flight is " <<  search->second << "kms" << endl;
+                        cout << "     Total distance is " << calc << "kms" << endl;
+                    } else {
+                        cout << "     Flight not found" << endl;
+                        cout << "     Total distance is " << calc << "kms" << endl;
+                    }     
+                    }
+                }
+            }
+
+            else {
                 cout << "Invalid input" << endl;
                 cin.clear();
             }

@@ -19,12 +19,6 @@ void findPermutations(vector<string>& dest, vector<vector<string>>& perms, int l
         current.push_back(home);
         current.insert(current.begin(), home);
         perms.push_back(current);
-        // int j = 0;
-        // for (auto i = current.begin(); i != current.end(); ++i) {
-        //     // cout << j << ":" << *i << " ";
-        //     ++j;
-        // }
-        // cout << endl;
     }
     else {
         for (int i=l; i<=r; ++i) {
