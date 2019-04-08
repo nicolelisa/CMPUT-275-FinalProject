@@ -6,3 +6,42 @@ Student ID: 1532156
 
 CMPUT 275, Winter 2019
 Final Project: Flight Paths
+
+Included Files:
+    * flightpath.cpp
+    * airport.h
+    * bruteforce.h
+    * nn.h
+    * dijkstra.cpp
+    * dijkstra.h
+    * digraph.cpp
+    * digraph.h
+    * wdigraph.h
+    * data/airportData.csv
+    * data/flightData.csv
+    * Makefile
+    * README
+
+Running Instructions:
+    1. Navigate to the directory containing all files in the 'Included Files' list, run the following command:
+        make && ./flightpath
+    2. Following the program prompts, enter the following information:
+        - Starting airport (An airport using the 3-letter naming convention)
+        - Number of airports (An integer)
+        - List of airports to visit (Space seperated list of airports using 3-letter naming convention)
+    3. The list of airports will be checked for validity and any non-valid airports will be removed from the list.
+    4. A menu will appear where you will be given 5 choices:
+        (1) Find Path Using Brute Force (Perfect Accuracy, Low Efficiency)
+        (2) Find Path Using Nearest Neighbour (Moderate Accuracy, High Efficiency)
+        (3) Enter New Destinations
+        (4) Exit
+    5. If you choose option 1 or 2: the calculated path, total kms traveled, and the running time will be printed. Destinations with a * beside the airports indicate that this is a layover destination and not part of the inital path. 
+    6. If you choose option 3: You will be taken to the main menu (Step 2 of Running Instructions)
+    7. If you choose option 4: The program will terminate. 
+
+Notes and Assumptions:
+    * Brute force will always output the best path, but runs in O(n!).
+    * Nearest Neighbour will not always output the best path, but will find a solution quickly.
+    * User inputs must be in valid formats or the program will not run.
+    * If the starting airport entered is not valid, the first valid destination airport in the inputted list will be used as the starting airport
+    * Brute force has an O(n!) runtime and will take a long time to run if used for more that 5 destinations.
