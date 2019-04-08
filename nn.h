@@ -72,15 +72,22 @@ void printOutput(ll distanceTravelled, int startVertex, list<int> path, vector<s
         cout << "No path was found" << endl;
     } else {
     path.push_front(startVertex);
+    set<string> stops;
 
     // Case if there is a path to all desired airports, prints an "*" before the airport
     // ID if there is a layover at another airport as the shortest route.
     for (list<int>::reverse_iterator rit = path.rbegin(); rit != path.rend(); ++rit) {
         string curCityName = IDsToName[*rit];
-        if (find(destinations.begin(), destinations.end(), IDsToName[*rit]) != destinations.end()) {
+        if (find(destinations.begin(), destinations.end(), IDsToName[*rit]) != destinations.end()
+            && stops.find(curCityName) == stops.end()) {
             cout << curCityName << " ";
+            stops.insert(curCityName);
         } else {
-            cout << "*" << curCityName << " ";
+            if (*rit == path.back()) {
+                cout << curCityName << " ";
+            } else {
+                cout << "*" << curCityName << " ";
+            }
         }
     }
     distanceTravelled = calculateNetDist(path, distances, IDsToName);
@@ -189,3 +196,4 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
 
 
 #endif
+
