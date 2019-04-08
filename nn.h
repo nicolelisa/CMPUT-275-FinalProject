@@ -34,6 +34,19 @@ ll findDistance(string city1, string city2, unordered_map<string, airport> airpo
     return curDistance;
 }
 
+ll calculateNetDist(list<int> listOfStops, unordered_map<string,ll> distances, unordered_map<int, string> IDsToName) {
+    ll distanceTravelled = 0;
+    string lastCityName = IDsToName[listOfStops.back()];
+    listOfStops.pop_back();
+    for (list<int>::reverse_iterator rit = listOfStops.rbegin(); rit != listOfStops.rend(); ++rit) {
+        string curCityName = IDsToName[*rit];
+        distanceTravelled += distances[lastCityName+curCityName];
+        lastCityName = curCityName;
+
+    }
+    return distanceTravelled;
+}
+
 void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, unordered_map<string, ll>& distances,
                               unordered_map<int, string> IDsToName, unordered_map<string, airport> airportInfo) {
     ll distanceTravelled = 0, lowestDistance = -1, curDistance;
@@ -87,10 +100,10 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
         } else {
             // goes through the path to the desired airport, adds the distance
             // of each flight to the distanceTravelled
-            distanceTravelled += searchTree.find(closestCity)->second.second;
+            //distanceTravelled += searchTree.find(closestCity)->second.second;
             citiesSoFar.insert(closestCity);
             while (closestCity != curCity) {
-                distanceTravelled += searchTree.find(closestCity)->second.second;
+                //distanceTravelled += searchTree.find(closestCity)->second.second;
                 tempPath.push_front(closestCity);
                 closestCity = searchTree[closestCity].first;
             }
@@ -182,6 +195,7 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
             cout << "*" << curCityName << " ";
         }
     }
+    distanceTravelled = calculateNetDist(path, distances, IDsToName);
 
     cout << endl << "Distance: " << distanceTravelled << "km" << endl;
 } 
