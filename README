@@ -22,6 +22,14 @@ Included Files:
     * Makefile
     * README
 
+Program Description:
+    This program is designed to help the user find the shortest route to a number of different airports.
+    It is inspired by an asymmetrical travelling salesman problem, this is because we used data based on real
+    flights, so not every airplane that goes from point A to B also has a route from B to A.
+    We have two algorithms used to calculate the shortest route, brute force, which is slow but guarantees the
+    shortest route, and a nearest neighbour, which is much faster when the inputs get large, but can be inaccurate
+    since its focus is efficiency.
+
 Running Instructions:
     1. Navigate to the directory containing all files in the 'Included Files' list, run the following command:
         make && ./flightpath
@@ -42,6 +50,10 @@ Running Instructions:
 Notes and Assumptions:
     * Brute force will always output the best path, but runs in O(n!).
     * Nearest Neighbour will not always output the best path, but will find a solution quickly.
+    * Nearest Neighbour will have a slightly longer running time on very small inputs (2 or 3) because there are more overhead
+      calculations than Brute force. However, it becomes much quicker than brute force as the input size gets larger.
     * User inputs must be in valid formats or the program will not run.
     * If the starting airport entered is not valid, the first valid destination airport in the inputted list will be used as the starting airport
     * Brute force has an O(n!) runtime and will take a long time to run if used for more that 5 destinations.
+    * dijkstra.h, dijkstra.cpp, digraph.h, digraph.cpp, and wdigraph.h were not modified and are copies of the code provided in class.
+    * Code in airport.h that is used to calculate Haversine distance is taken from: https://rosettacode.org/wiki/Haversine_formula
