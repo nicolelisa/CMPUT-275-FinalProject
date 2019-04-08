@@ -100,14 +100,12 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
         } else {
             // goes through the path to the desired airport, adds the distance
             // of each flight to the distanceTravelled
-            //distanceTravelled += searchTree.find(closestCity)->second.second;
             citiesSoFar.insert(closestCity);
             while (closestCity != curCity) {
-                //distanceTravelled += searchTree.find(closestCity)->second.second;
                 tempPath.push_front(closestCity);
                 closestCity = searchTree[closestCity].first;
             }
-            if (path.size() < 2) {
+            if (tempPath.size() <= 2) {
                 for (list<int>::iterator it = tempPath.begin(); it != tempPath.end(); ++it) {
                     path.push_front(*it);
                 }
@@ -118,8 +116,10 @@ void modifiedNearestNeighbour(WDigraph& fullGraph, vector<string> destinations, 
             }
             tempPath.clear();
             searchTree.clear();
-            curCityName = IDsToName[path.back()];
-            curCity = path.back();
+            //curCityName = IDsToName[path.back()];
+            //curCity = path.back();
+            curCityName = IDsToName[path.front()];
+            curCity = path.front();
         }
     }
     // calculate round trip
