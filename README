@@ -42,6 +42,10 @@ Running Instructions:
 Notes and Assumptions:
     * Brute force will always output the best path, but runs in O(n!).
     * Nearest Neighbour will not always output the best path, but will find a solution quickly.
+    * Nearest Neighbour will have a slightly longer running time on very small inputs (2 or 3) because there are more overhead
+      calculations than Brute force. However, it becomes much quicker than brute force as the input size gets larger.
     * User inputs must be in valid formats or the program will not run.
     * If the starting airport entered is not valid, the first valid destination airport in the inputted list will be used as the starting airport
     * Brute force has an O(n!) runtime and will take a long time to run if used for more that 5 destinations.
+    * dijkstra.h, dijkstra.cpp, digraph.h, digraph.cpp, and wdigraph.h were not modified and are copies of the code provided in class.
+    * Code in airport.h that is used to calculate Haversine distance is taken from: https://rosettacode.org/wiki/Haversine_formula
