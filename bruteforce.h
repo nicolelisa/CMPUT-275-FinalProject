@@ -1,5 +1,12 @@
 /*
-	ADD FILE HEADER
+Name: Nicole Hagerman
+Student ID: 1200596
+
+Name: Riona Wiberg
+Student ID: 1532156
+
+CMPUT 275, Winter 2019
+Project: Flightpath
 */
 
 #ifndef _BRUTEFORCE_H_
@@ -12,6 +19,7 @@
 using namespace std;
 typedef pair<int, long long> PIL;
 
+// Takes a vector of strings (dest) and adds all possible permutations to the perms vector. 
 // adapted from https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
 void findPermutations(vector<string>& dest, vector<vector<string>>& perms, int l, int r, string home) {
     if (l == r) {
@@ -29,6 +37,9 @@ void findPermutations(vector<string>& dest, vector<vector<string>>& perms, int l
     }
 }
 
+// Uses dijkstra alogrithm to find the shortest path between two destinations that are not directly 
+// connected. Adds the path to the current permutation (currentPerm) and adds the distance of the path
+// to the total distance.
 void findPath(vector<string>& currentPerm, int& position, ll& currentDist, int start, int end, const WDigraph& pathGraph, const unordered_map<int, string>& idsToAirports) {
 	unordered_map<int, PIL> tree;
 	dijkstra(pathGraph, start, tree);
@@ -58,6 +69,8 @@ void findPath(vector<string>& currentPerm, int& position, ll& currentDist, int s
 	}
 }
 
+// Run the brute force path search using the airports, idsToAirports and flights hash tables. Pass the pathGraph
+// parameter in case there is no path between two destinations and a layover is required.
 void bruteforce(vector<string> dest, const unordered_map<string, airport>& airports, const unordered_map<string, ll>& flights, 
 				const WDigraph pathGraph, const unordered_map<int, string>& idsToAirports) {
     vector<string> min_path = dest;
@@ -110,12 +123,12 @@ void bruteforce(vector<string> dest, const unordered_map<string, airport>& airpo
 	if (min_distance == -1) {
 		cout << "No path was found" << endl;
 	} else {
-    for (auto i = min_path.begin(); i != min_path.end(); ++i) {
-    	cout << *i << " ";
+	    for (auto i = min_path.begin(); i != min_path.end(); ++i) {
+	    	cout << *i << " ";
+		}
+		cout << endl;
+		cout << "Minimum distance is " << min_distance << "km" << endl;
 	}
-	cout << endl;
-	cout << "Minimum distance is " << min_distance << "km" << endl;
-}
 }
 
 #endif
