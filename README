@@ -22,6 +22,14 @@ Included Files:
     * Makefile
     * README
 
+Program Description:
+    This program is designed to help the user find the shortest route to a number of different airports.
+    It is inspired by an asymmetrical travelling salesman problem, this is because we used data based on real
+    flights, so not every airplane that goes from point A to B also has a route from B to A.
+    We have two algorithms used to calculate the shortest route, brute force, which is slow but guarantees the
+    shortest route, and a nearest neighbour, which is much faster when the inputs get large, but can be inaccurate
+    since its focus is efficiency.
+
 Running Instructions:
     1. Navigate to the directory containing all files in the 'Included Files' list, run the following command:
         make && ./flightpath
