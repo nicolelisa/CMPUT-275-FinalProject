@@ -1,3 +1,14 @@
+/*
+Name: Nicole Hagerman
+Student ID: 1200596
+
+Name: Riona Wiberg
+Student ID: 1532156
+
+CMPUT 275, Winter 2019
+Project: Flightpath
+*/
+
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
